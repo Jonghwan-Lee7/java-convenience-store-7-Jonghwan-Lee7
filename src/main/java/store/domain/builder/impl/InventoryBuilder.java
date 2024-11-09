@@ -3,14 +3,14 @@ package store.domain.builder.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import store.domain.builder.SingleBuilder;
+import store.domain.builder.InputBuilder;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Product;
 import store.domain.storeOpen.impl.StoreInventory;
 import store.domain.storeOpen.impl.StoreProduct;
 import store.utils.SingleParser;
 
-public class InventoryBuilder implements SingleBuilder<Inventory, List<String>> {
+public class InventoryBuilder implements InputBuilder<Inventory> {
     private final SingleParser<Integer> positiveIntParser;
 
     public InventoryBuilder( SingleParser<Integer> positiveIntParser ) {
@@ -54,13 +54,11 @@ public class InventoryBuilder implements SingleBuilder<Inventory, List<String>> 
         int price = positiveIntParser.parse(rawProducts.get(index + 1));
         int stock = positiveIntParser.parse(rawProducts.get(index + 2));
         String promotionName = rawProducts.get(index + 3);
+
         if (promotionName.equals("null")) {
             return StoreProduct.of(price,stock,0,null);
-
         }
 
         return StoreProduct.of(price,0,stock,promotionName);
-
-
     }
 }
