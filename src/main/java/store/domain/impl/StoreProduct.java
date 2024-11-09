@@ -4,8 +4,6 @@ package store.domain.impl;
 import store.domain.Product;
 
 public class StoreProduct implements Product {
-    // 이름 저장하지 말고 Inventory에서 Set의 키값으로 쓰자.
-    // 그리고 Promotion Inventory를 따로 구현하자.
 
     private final int price;
     private int normalStock;
@@ -46,6 +44,31 @@ public class StoreProduct implements Product {
         if (this.promotionName == null ){
             this.promotionName = promotionName;
         }
+    }
+
+    @Override
+    public String toFormattedString(String productName) {
+        String normalStock = parseStock(this.normalStock);
+
+        String productStatus = String.format("- %s %,d원 %s", productName, this.price, normalStock);
+
+        if (this.promotionName == null) {
+            return productStatus;
+        }
+
+        String promotionStock = parseStock(this.promotionStock);
+
+        productStatus += String.format("\n- %s %,d원 %s %s", productName, this.price, promotionStock, this.promotionName);
+
+        return productStatus;
+    }
+
+    private String parseStock(int stock){
+        if (stock != 0){
+            return String.format("%d개", stock);
+        }
+
+        return "재고 없음";
     }
 
 }

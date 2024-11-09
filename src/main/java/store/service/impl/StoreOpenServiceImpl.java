@@ -1,11 +1,15 @@
 package store.service.impl;
 
+import static store.exception.ErrorMessages.NO_SAVE_INVENTORY;
+
 import java.util.List;
 import store.domain.FileReader;
 import store.domain.Inventory;
 import store.domain.Promotions;
 import store.domain.SingleBuilder;
 import store.domain.impl.StoreFileReader;
+import store.dto.StockDTO;
+import store.exception.EntityNotFoundException;
 import store.repository.SingleRepository;
 import store.service.StoreOpenService;
 
@@ -44,6 +48,14 @@ public class StoreOpenServiceImpl implements StoreOpenService {
         List<String> rawInventory = fileReader.getRawProducts();
         Inventory inventory = inventoryBuilder.build(rawInventory);
         inventoryRepository.save(inventory);
+    }
+
+    @Override
+    public List<StockDTO> createStockDTOs(){
+        Inventory inventory =  inventoryRepository.get()
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVE_INVENTORY.getMessage()));
+
+        return inventory.toDTOs();
     }
 
 }

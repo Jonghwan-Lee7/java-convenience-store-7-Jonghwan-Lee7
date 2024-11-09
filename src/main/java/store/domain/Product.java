@@ -7,4 +7,6 @@ public interface Product {
     void addStock(int stock);
 
     void updatePromotion(String promotionName);
+
+    String toFormattedString(String productName);
 }
