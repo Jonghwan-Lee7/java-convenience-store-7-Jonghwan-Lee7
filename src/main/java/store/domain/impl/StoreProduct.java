@@ -48,17 +48,15 @@ public class StoreProduct implements Product {
 
     @Override
     public String toFormattedString(String productName) {
+
+        String productStatus = "";
+
+        if (this.promotionName != null){
+            productStatus = addPromotionProductStatus(productName);
+        }
         String normalStock = parseStock(this.normalStock);
 
-        String productStatus = String.format("- %s %,d원 %s", productName, this.price, normalStock);
-
-        if (this.promotionName == null) {
-            return productStatus;
-        }
-
-        String promotionStock = parseStock(this.promotionStock);
-
-        productStatus += String.format("\n- %s %,d원 %s %s", productName, this.price, promotionStock, this.promotionName);
+        productStatus += String.format("- %s %,d원 %s", productName, this.price, normalStock);
 
         return productStatus;
     }
@@ -69,6 +67,12 @@ public class StoreProduct implements Product {
         }
 
         return "재고 없음";
+    }
+
+    private String addPromotionProductStatus(String productName){
+        String promotionStock = parseStock(this.promotionStock);
+
+        return String.format("- %s %,d원 %s %s\n", productName, this.price, promotionStock, this.promotionName);
     }
 
 }
