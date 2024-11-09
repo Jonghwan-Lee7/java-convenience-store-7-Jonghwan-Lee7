@@ -8,34 +8,44 @@ public class StoreProduct implements Product {
     // 그리고 Promotion Inventory를 따로 구현하자.
 
     private final int price;
-    private int stock;
+    private int normalStock;
     private int promotionStock;
-    private final StorePromotion promotion;
+    private String promotionName;
 
-    private StoreProduct( int price, int stock, int promotionStock, StorePromotion promotion) {
+    private StoreProduct(int price, int normalStock, int promotionStock, String promotionName) {
         this.price = price;
         this.promotionStock = promotionStock;
-        this.stock = stock;
-        this.promotion = promotion;
+        this.normalStock = normalStock;
+        this.promotionName = promotionName;
     }
 
-    public static StoreProduct create(int price, int stock, int promotionStock, StorePromotion promotion) {
+
+    public static StoreProduct create(int price, int stock, int promotionStock, String promotion) {
         return new StoreProduct( price, stock, promotionStock, promotion);
     }
 
-    public void updateStocks(int salesCount){
-        stock -= salesCount;
+    @Override
+    public void updateStocks(int normalSalesCount, int promotionSalesCount){
+        normalStock -= normalSalesCount;
+        promotionStock -= promotionSalesCount;
     }
 
+    @Override
     public void addStock(int stock){
-        if(this.stock == 0){
-            this.stock = stock;
+        if (this.normalStock == 0){
+            this.normalStock = stock;
+        }
+
+        if (this.promotionStock == 0){
+            this.promotionStock = stock;
         }
     }
 
-    public void addPromotionStock(int promotionStock){
-        if(this.promotionStock == 0){
-            this.promotionStock = promotionStock;
+    @Override
+    public void updatePromotion(String promotionName){
+        if (this.promotionName == null ){
+            this.promotionName = promotionName;
         }
     }
+
 }
