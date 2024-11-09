@@ -1,4 +1,5 @@
 package store.utils;
 
-public interface Parser {
+public interface Parser<Type> {
+    Type parse(String rawTarget);
 }

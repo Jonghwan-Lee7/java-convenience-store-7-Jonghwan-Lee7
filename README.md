@@ -6,8 +6,10 @@
 
 
 - [ ] **1. 구현에 필요한 상품목록과 행사 목록을 파일 입출력을 통해 불러온다.**
-  -[ ] ```src/main/resources/products.md```과 ```src/main/resources/promotions.md``` 파일을 읽어드린다
-  -[ ] 불러온 값을 통해 재고, 프로모션 재고, 프로모션 정보 ( 기한, N+1.. ) 등을 얻어 저장한다.
+  - [x] ```src/main/resources/products.md```과 ```src/main/resources/promotions.md``` 파일을 읽어드린다
+  - [ ] 프로모션 정보 ( 기한, N+1.. ) 를 얻어 저장한다.
+  - [ ] 불러온 값을 통해 재고, 프로모션 재고, 
+  - 
 
 <br>
 
