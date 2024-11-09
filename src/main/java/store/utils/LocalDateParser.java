@@ -3,7 +3,7 @@ package store.utils;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class LocalDateParser implements Parser<LocalDate> {
+public class LocalDateParser implements SingleParser<LocalDate> {
 
     public LocalDate parse(String rawDate){
         try {
