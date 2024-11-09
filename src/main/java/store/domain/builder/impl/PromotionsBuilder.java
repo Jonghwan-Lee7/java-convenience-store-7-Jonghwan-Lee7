@@ -2,14 +2,14 @@ package store.domain.builder.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import store.domain.builder.SingleBuilder;
+import store.domain.builder.InputBuilder;
 import store.domain.storeOpen.Promotion;
 import store.domain.storeOpen.Promotions;
 import store.domain.storeOpen.impl.StorePromotion;
 import store.domain.storeOpen.impl.StorePromotions;
 import store.utils.SingleParser;
 
-public class PromotionsBuilder implements SingleBuilder<Promotions,List<String>> {
+public class PromotionsBuilder implements InputBuilder<Promotions> {
     private final SingleParser<Integer> positiveIntParser;
     private final SingleParser<LocalDate> localDateParser;
 

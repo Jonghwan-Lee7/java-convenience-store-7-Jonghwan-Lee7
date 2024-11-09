@@ -1,12 +1,12 @@
 package store.service.impl;
 
-import static store.exception.ErrorMessages.NO_SAVE_INVENTORY;
+import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 
 import java.util.List;
 import store.domain.storeOpen.FileReader;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
-import store.domain.builder.SingleBuilder;
+import store.domain.builder.InputBuilder;
 import store.domain.storeOpen.impl.StoreFileReader;
 import store.dto.StockDTO;
 import store.exception.EntityNotFoundException;
@@ -16,15 +16,15 @@ import store.service.StoreOpenService;
 public class StoreOpenServiceImpl implements StoreOpenService {
     private final SingleRepository<Promotions> promotionsRepository;
     private final SingleRepository<Inventory> inventoryRepository;
-    private final SingleBuilder<Promotions,List<String>> promotionsBuilder;
-    private final SingleBuilder<Inventory,List<String>> inventoryBuilder;
+    private final InputBuilder<Promotions> promotionsBuilder;
+    private final InputBuilder<Inventory> inventoryBuilder;
 
     private final FileReader fileReader = new StoreFileReader();
 
     public StoreOpenServiceImpl(SingleRepository<Promotions> promotionsRepository,
                                 SingleRepository<Inventory> inventoryRepository,
-                                SingleBuilder<Promotions,List<String>>  promotionsBuilder,
-                                SingleBuilder<Inventory,List<String>> inventoryBuilder) {
+                                InputBuilder<Promotions> promotionsBuilder,
+                                InputBuilder<Inventory> inventoryBuilder) {
 
         this.promotionsRepository = promotionsRepository;
         this.inventoryRepository = inventoryRepository;
@@ -53,7 +53,7 @@ public class StoreOpenServiceImpl implements StoreOpenService {
     @Override
     public List<StockDTO> createStockDTOs(){
         Inventory inventory =  inventoryRepository.get()
-                .orElseThrow(()-> new EntityNotFoundException(NO_SAVE_INVENTORY.getMessage()));
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getMessage()));
 
         return inventory.toDTOs();
     }

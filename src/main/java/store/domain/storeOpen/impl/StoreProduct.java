@@ -1,6 +1,11 @@
 package store.domain.storeOpen.impl;
 
 
+import static java.lang.Math.min;
+import static store.exception.ErrorMessages.MORE_THAN_TOTAL_STOCK;
+
+import java.util.ArrayList;
+import java.util.List;
 import store.domain.storeOpen.Product;
 
 public class StoreProduct implements Product {
@@ -58,6 +63,35 @@ public class StoreProduct implements Product {
 
         return productStatus;
     }
+
+    @Override
+    public List<Integer> getPurchaseDetails(int purchaseQuantity){
+        validatePurchase(purchaseQuantity);
+        List<Integer> details = new ArrayList<>();
+
+        int promotionPurchase = getPromotionPurchaseCount(purchaseQuantity);
+        details.add(promotionPurchase);
+        details.add(this.price);
+
+        return details;
+    }
+
+
+    @Override
+    public String getPromotionName(){
+        return promotionName;
+    }
+
+    private void validatePurchase(int purchaseQuantity){
+        if (purchaseQuantity > normalStock + promotionStock){
+            throw new IllegalArgumentException(MORE_THAN_TOTAL_STOCK.getMessage());
+        }
+    }
+
+    private int getPromotionPurchaseCount(int purchaseQuantity){
+        return  min(purchaseQuantity, promotionStock);
+    }
+
 
     private String parseStock(int stock){
         if (stock != 0){

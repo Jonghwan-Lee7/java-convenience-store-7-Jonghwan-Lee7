@@ -1,5 +1,7 @@
 package store.domain.storeOpen.impl;
 
+import static store.exception.ErrorMessages.INVALID_PRODUCT_NAME;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,5 +31,23 @@ public class StoreInventory implements Inventory {
             stockDTOs.add(stockDTO);
         }
         return stockDTOs;
+    }
+
+
+    @Override
+    public List<Integer> getPurchaseDetails(String productName, int quantity){
+        validatePurchase(productName, quantity);
+        Product product = products.get(productName);
+        return product.getPurchaseDetails(quantity);
+    }
+
+
+    private void validatePurchase(String productName, int quantity) {
+
+        if ( !products.containsKey(productName)) {
+            throw new IllegalArgumentException(INVALID_PRODUCT_NAME.getMessage());
+        }
+
+        Product product = products.get(productName);
     }
 }
