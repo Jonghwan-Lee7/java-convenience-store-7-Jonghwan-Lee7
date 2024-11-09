@@ -53,7 +53,7 @@ public class StoreOpenServiceImpl implements StoreOpenService {
     @Override
     public List<StockDTO> createStockDTOs(){
         Inventory inventory =  inventoryRepository.get()
-                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getMessage()));
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
 
         return inventory.toDTOs();
     }

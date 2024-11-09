@@ -45,7 +45,7 @@ public class StoreInventory implements Inventory {
     private void validatePurchase(String productName, int quantity) {
 
         if ( !products.containsKey(productName)) {
-            throw new IllegalArgumentException(INVALID_PRODUCT_NAME.getMessage());
+            throw new IllegalArgumentException(INVALID_PRODUCT_NAME.getErrorMessage());
         }
 
         Product product = products.get(productName);

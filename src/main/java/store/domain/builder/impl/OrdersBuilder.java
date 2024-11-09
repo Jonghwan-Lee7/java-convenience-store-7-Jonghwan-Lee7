@@ -33,7 +33,6 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
         String[] orderDetails =  extractproductDetails(rawOrder);
         String productName = orderDetails[0];
         int quantity = Integer.parseInt(orderDetails[1]);
-
         return generateOrder(productName,quantity,inventory);
     }
 
@@ -50,7 +49,7 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
 
     private void validate(String rawOrder,Inventory inventory) {
         if (!rawOrder.matches(REGEX_FOR_ORDER)){
-            throw new IllegalArgumentException(INVALID_FORMAT.getMessage());
+            throw new IllegalArgumentException(INVALID_FORMAT.getErrorMessage());
         }
     }
 

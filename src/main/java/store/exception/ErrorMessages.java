@@ -11,8 +11,12 @@ public enum ErrorMessages {
     ErrorMessages(String message) {
         this.message = message;
     }
-    public String getMessage() {
-        return ERROR_HEADER + message;
+    public String getErrorMessage() {
+        return ERROR_HEADER.getMessage() + message;
+    }
+
+    public String getMessage(){
+        return message;
     }
 
 }

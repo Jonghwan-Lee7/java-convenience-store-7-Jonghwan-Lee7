@@ -27,7 +27,7 @@ public class TakeOrderServiceImpl implements TakeOrderService {
     @Override
     public void takeOrder(String rawOrder) {
         Inventory inventory = inventoryRepository.get()
-                        .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getMessage()));
+                        .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
 
         Orders orders = ordersBuilder.build(rawOrder, inventory);
         ordersRepository.save(orders);
