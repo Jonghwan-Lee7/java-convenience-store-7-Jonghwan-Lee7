@@ -24,7 +24,7 @@ public class InventoryBuilder implements SingleBuilder<Inventory, List<String>> 
             processProduct(products, rawProducts, index, name);
         }
 
-        return StoreInventory.create(products);
+        return StoreInventory.from(products);
     }
 
     private void processProduct(Map<String, Product> products, List<String> rawProducts, int index, String name) {
@@ -53,11 +53,11 @@ public class InventoryBuilder implements SingleBuilder<Inventory, List<String>> 
         int stock = positiveIntParser.parse(rawProducts.get(index + 2));
         String promotionName = rawProducts.get(index + 3);
         if (promotionName.equals("null")) {
-            return StoreProduct.create(price,stock,0,null);
+            return StoreProduct.of(price,stock,0,null);
 
         }
 
-        return StoreProduct.create(price,0,stock,promotionName);
+        return StoreProduct.of(price,0,stock,promotionName);
 
 
     }

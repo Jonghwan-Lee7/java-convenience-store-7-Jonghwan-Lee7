@@ -6,6 +6,7 @@ import java.util.Map;
 import store.domain.Inventory;
 import store.domain.Product;
 import store.dto.StockDTO;
+import store.utils.DTOMapper;
 
 public class StoreInventory implements Inventory {
     private final Map<String, Product> products;
@@ -14,7 +15,7 @@ public class StoreInventory implements Inventory {
         this.products = products;
     }
 
-    public static StoreInventory create(Map<String, Product> products) {
+    public static StoreInventory from(Map<String, Product> products) {
         return new StoreInventory(products);
     }
 
@@ -24,7 +25,8 @@ public class StoreInventory implements Inventory {
 
         for (String productName : products.keySet()) {
             Product product = products.get(productName);
-            stockDTOs.add(new StockDTO(product.toFormattedString(productName)));
+            StockDTO stockDTO =  DTOMapper.toStockDTO(product,productName);
+            stockDTOs.add(stockDTO);
         }
         return stockDTOs;
     }

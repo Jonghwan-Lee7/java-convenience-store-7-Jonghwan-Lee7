@@ -18,7 +18,7 @@ public class StoreProduct implements Product {
     }
 
 
-    public static StoreProduct create(int price, int stock, int promotionStock, String promotion) {
+    public static StoreProduct of(int price, int stock, int promotionStock, String promotion) {
         return new StoreProduct( price, stock, promotionStock, promotion);
     }
 
@@ -48,14 +48,12 @@ public class StoreProduct implements Product {
 
     @Override
     public String toFormattedString(String productName) {
-
         String productStatus = "";
-
         if (this.promotionName != null){
             productStatus = addPromotionProductStatus(productName);
         }
-        String normalStock = parseStock(this.normalStock);
 
+        String normalStock = parseStock(this.normalStock);
         productStatus += String.format("- %s %,d원 %s", productName, this.price, normalStock);
 
         return productStatus;
