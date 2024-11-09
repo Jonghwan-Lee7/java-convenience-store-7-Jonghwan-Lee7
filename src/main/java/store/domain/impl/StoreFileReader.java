@@ -3,6 +3,7 @@ package store.domain.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import store.domain.FileReader;
@@ -11,6 +12,7 @@ public class StoreFileReader implements FileReader {
 
     private final String PRODUCT_PATH = "src/main/resources/products.md";
     private final String PROMOTIONS_PATH = "src/main/resources/promotions.md";
+    private final String DELIMITER = ",";
 
     public List<String> getRawProducts()  {
         try {
@@ -36,7 +38,9 @@ public class StoreFileReader implements FileReader {
 
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
-                contents.add(scanner.nextLine());
+                String line = scanner.nextLine();
+                String[] parts = line.split(DELIMITER);
+                Collections.addAll(contents, parts); // 분리된 내용을 contents에 추가
             }
         }
 
