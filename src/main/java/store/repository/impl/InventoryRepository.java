@@ -1,7 +1,7 @@
 package store.repository.impl;
 
 import java.util.Optional;
-import store.domain.Inventory;
+import store.domain.storeOpen.Inventory;
 import store.repository.SingleRepository;
 
 public class InventoryRepository implements SingleRepository<Inventory> {

@@ -1,7 +1,7 @@
-package store.domain.impl;
+package store.domain.storeOpen.impl;
 
 
-import store.domain.Product;
+import store.domain.storeOpen.Product;
 
 public class StoreProduct implements Product {
 

@@ -1,4 +1,4 @@
-package store.domain.impl;
+package store.domain.storeOpen.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import store.domain.FileReader;
+import store.domain.storeOpen.FileReader;
 
 public class StoreFileReader implements FileReader {
 

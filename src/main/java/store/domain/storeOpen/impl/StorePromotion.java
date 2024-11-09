@@ -1,8 +1,8 @@
-package store.domain.impl;
+package store.domain.storeOpen.impl;
 
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
-import store.domain.Promotion;
+import store.domain.storeOpen.Promotion;
 
 public class StorePromotion implements Promotion {
     private final int buyCount;

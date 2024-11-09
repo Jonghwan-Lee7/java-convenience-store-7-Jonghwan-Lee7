@@ -3,11 +3,11 @@ package store.service.impl;
 import static store.exception.ErrorMessages.NO_SAVE_INVENTORY;
 
 import java.util.List;
-import store.domain.FileReader;
-import store.domain.Inventory;
-import store.domain.Promotions;
-import store.domain.SingleBuilder;
-import store.domain.impl.StoreFileReader;
+import store.domain.storeOpen.FileReader;
+import store.domain.storeOpen.Inventory;
+import store.domain.storeOpen.Promotions;
+import store.domain.builder.SingleBuilder;
+import store.domain.storeOpen.impl.StoreFileReader;
 import store.dto.StockDTO;
 import store.exception.EntityNotFoundException;
 import store.repository.SingleRepository;

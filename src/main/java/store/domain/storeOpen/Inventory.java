@@ -1,4 +1,4 @@
-package store.domain;
+package store.domain.storeOpen;
 
 import java.util.List;
 import store.dto.StockDTO;

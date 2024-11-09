@@ -1,10 +1,10 @@
-package store.domain.impl;
+package store.domain.storeOpen.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import store.domain.Inventory;
-import store.domain.Product;
+import store.domain.storeOpen.Inventory;
+import store.domain.storeOpen.Product;
 import store.dto.StockDTO;
 import store.utils.DTOMapper;
 

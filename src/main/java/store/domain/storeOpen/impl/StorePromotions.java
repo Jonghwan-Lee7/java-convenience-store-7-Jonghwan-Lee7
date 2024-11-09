@@ -1,12 +1,12 @@
-package store.domain.impl;
+package store.domain.storeOpen.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import store.domain.Promotion;
-import store.domain.Promotions;
+import store.domain.storeOpen.Promotion;
+import store.domain.storeOpen.Promotions;
 
 public class StorePromotions implements Promotions {
-    private final Map<String,Promotion> promotions;
+    private final Map<String, Promotion> promotions;
 
     private StorePromotions() {
         this.promotions = new HashMap<>();

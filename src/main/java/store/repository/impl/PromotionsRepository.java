@@ -1,7 +1,7 @@
 package store.repository.impl;
 
 import java.util.Optional;
-import store.domain.Promotions;
+import store.domain.storeOpen.Promotions;
 import store.repository.SingleRepository;
 
 public class PromotionsRepository implements SingleRepository<Promotions> {

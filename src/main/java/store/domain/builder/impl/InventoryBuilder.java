@@ -1,11 +1,13 @@
-package store.domain.impl;
+package store.domain.builder.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import store.domain.Inventory;
-import store.domain.Product;
-import store.domain.SingleBuilder;
+import store.domain.builder.SingleBuilder;
+import store.domain.storeOpen.Inventory;
+import store.domain.storeOpen.Product;
+import store.domain.storeOpen.impl.StoreInventory;
+import store.domain.storeOpen.impl.StoreProduct;
 import store.utils.SingleParser;
 
 public class InventoryBuilder implements SingleBuilder<Inventory, List<String>> {

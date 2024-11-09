@@ -1,4 +1,4 @@
-package store.domain;
+package store.domain.storeOpen;
 
 public interface Promotions {
     Promotion getPromotion(String promotionId);

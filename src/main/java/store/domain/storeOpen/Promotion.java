@@ -1,4 +1,4 @@
-package store.domain;
+package store.domain.storeOpen;
 
 public interface Promotion {
     int getApplicableItemCount (int purchaseCount);
