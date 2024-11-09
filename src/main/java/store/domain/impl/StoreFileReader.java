@@ -12,7 +12,7 @@ public class StoreFileReader implements FileReader {
     private final String PRODUCT_PATH = "src/main/resources/products.md";
     private final String PROMOTIONS_PATH = "src/main/resources/promotions.md";
 
-    public List<String> getProducts()  {
+    public List<String> getRawProducts()  {
         try {
             return read(PRODUCT_PATH);
         } catch (FileNotFoundException e) {
@@ -21,7 +21,7 @@ public class StoreFileReader implements FileReader {
         }
     }
 
-    public List<String> getPromotions()  {
+    public List<String> getRawPromotions()  {
         try {
             return read(PROMOTIONS_PATH);
         } catch (FileNotFoundException e) {
