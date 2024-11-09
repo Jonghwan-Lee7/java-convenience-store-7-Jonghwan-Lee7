@@ -21,7 +21,7 @@ public class StorePromotions implements Promotions {
         return promotions.get(promotionId);
     }
 
-    public void add(String promotionId, Promotion promotion) {
-        promotions.put(promotionId, promotion);
+    public void add(String promotionName, Promotion promotion) {
+        promotions.put(promotionName, promotion);
     }
 }
