@@ -12,11 +12,15 @@ public class StorePromotion implements Promotion {
     private final LocalDate endDate;
 
 
-    public StorePromotion(int buyCount, int getCount, LocalDate startDate, LocalDate endDate) {
+    private StorePromotion(int buyCount, int getCount, LocalDate startDate, LocalDate endDate) {
         this.buyCount = buyCount;
         this.getCount = getCount;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public static StorePromotion create(int buyCount, int getCount, LocalDate startDate, LocalDate endDate){
+        return new StorePromotion(buyCount, getCount, startDate, endDate);
     }
 
 
@@ -38,6 +42,8 @@ public class StorePromotion implements Promotion {
         return (purchaseCount / (buyCount + getCount))  * getCount ;
     }
 
+
+    // 이 메서드는 Product로 옮기는게 맞아보임
     public boolean canGetFreeItem( int purchaseCount) {
         return  getFreeItemCount( purchaseCount ) !=  getFreeItemCount( purchaseCount + 1 );
     }
