@@ -1,5 +1,5 @@
 package store.domain;
 
-public interface Builder<Type,InputType> {
+public interface SingleBuilder<Type,InputType> {
     Type build(InputType rawInput);
 }
