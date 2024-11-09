@@ -20,12 +20,21 @@ public class StoreController {
     }
 
     public void run(){
+        openStore();
+        takeOrder();
+
+    }
+
+    private void openStore(){
         storeOpenService.loadPromotions();
         storeOpenService.loadInventory();
 
         List<StockDTO> stockDTOs = storeOpenService.createStockDTOs();
 
         outputView.printStocks(stockDTOs);
+    }
 
+    private void takeOrder(){
+        String rawOrder = inputView.readOrder();
     }
 }
