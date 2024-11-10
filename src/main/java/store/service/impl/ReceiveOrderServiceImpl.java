@@ -3,20 +3,20 @@ package store.service.impl;
 import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 
 import store.domain.builder.TwoInputsBuilder;
-import store.domain.purchase.Orders;
+import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.exception.EntityNotFoundException;
 import store.repository.SingleRepository;
-import store.service.TakeOrderService;
+import store.service.ReceiveOrderService;
 
-public class TakeOrderServiceImpl implements TakeOrderService {
+public class ReceiveOrderServiceImpl implements ReceiveOrderService {
     private final TwoInputsBuilder<Orders,Inventory> ordersBuilder;
     private final SingleRepository<Inventory> inventoryRepository;
     private final SingleRepository<Orders> ordersRepository;
 
-    public TakeOrderServiceImpl(TwoInputsBuilder<Orders,Inventory> ordersBuilder,
-                                SingleRepository<Inventory> inventoryRepository,
-                                SingleRepository<Orders> ordersRepository) {
+    public ReceiveOrderServiceImpl(TwoInputsBuilder<Orders,Inventory> ordersBuilder,
+                                   SingleRepository<Inventory> inventoryRepository,
+                                   SingleRepository<Orders> ordersRepository) {
 
         this.ordersBuilder = ordersBuilder;
         this.inventoryRepository = inventoryRepository;

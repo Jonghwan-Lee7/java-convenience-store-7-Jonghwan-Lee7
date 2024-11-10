@@ -5,10 +5,10 @@ import static store.exception.ErrorMessages.INVALID_FORMAT;
 import java.util.ArrayList;
 import java.util.List;
 import store.domain.builder.TwoInputsBuilder;
-import store.domain.purchase.Order;
-import store.domain.purchase.Orders;
-import store.domain.purchase.impl.StoreOrder;
-import store.domain.purchase.impl.StoreOrders;
+import store.domain.receiveOrder.Order;
+import store.domain.receiveOrder.Orders;
+import store.domain.receiveOrder.impl.StoreOrder;
+import store.domain.receiveOrder.impl.StoreOrders;
 import store.domain.storeOpen.Inventory;
 
 public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {

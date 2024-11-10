@@ -1,6 +1,6 @@
-package store.domain.purchase.impl;
+package store.domain.receiveOrder.impl;
 
-import store.domain.purchase.Order;
+import store.domain.receiveOrder.Order;
 
 public class StoreOrder implements Order {
     private final String productName;

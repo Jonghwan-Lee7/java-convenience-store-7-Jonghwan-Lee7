@@ -1,5 +1,5 @@
 package store.service;
 
-public interface TakeOrderService {
+public interface ReceiveOrderService {
     void takeOrder(String rawOrder);
 }

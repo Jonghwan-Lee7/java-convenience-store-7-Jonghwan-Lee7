@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import store.controller.StoreController;
 import store.domain.builder.TwoInputsBuilder;
 import store.domain.builder.impl.OrdersBuilder;
-import store.domain.purchase.Orders;
+import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
 import store.domain.builder.InputBuilder;
@@ -15,9 +15,9 @@ import store.repository.SingleRepository;
 import store.repository.impl.InventoryRepository;
 import store.repository.impl.PromotionsRepository;
 import store.service.StoreOpenService;
-import store.service.TakeOrderService;
+import store.service.ReceiveOrderService;
 import store.service.impl.StoreOpenServiceImpl;
-import store.service.impl.TakeOrderServiceImpl;
+import store.service.impl.ReceiveOrderServiceImpl;
 import store.utils.LocalDateParser;
 import store.utils.SingleParser;
 import store.utils.PositiveIntParser;
@@ -47,10 +47,10 @@ public class AppConfig {
             inventoryRepository,
             promotionsBuilder,
             inventoryBuilder);
-    private final static TakeOrderService takeOrderService = new TakeOrderServiceImpl(ordersBuilder,inventoryRepository,ordersRepository);
+    private final static ReceiveOrderService receiveOrderService = new ReceiveOrderServiceImpl(ordersBuilder,inventoryRepository,ordersRepository);
 
 
-    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,storeOpenService,takeOrderService);
+    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,storeOpenService,receiveOrderService);
 
     public static StoreController getStoreController(){
         return storeController;

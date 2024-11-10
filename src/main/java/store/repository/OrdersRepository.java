@@ -1,7 +1,7 @@
 package store.repository;
 
 import java.util.Optional;
-import store.domain.purchase.Orders;
+import store.domain.receiveOrder.Orders;
 
 public class OrdersRepository implements SingleRepository<Orders> {
     private  Orders orders;

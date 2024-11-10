@@ -1,8 +1,8 @@
-package store.domain.purchase.impl;
+package store.domain.receiveOrder.impl;
 
 import java.util.List;
-import store.domain.purchase.Order;
-import store.domain.purchase.Orders;
+import store.domain.receiveOrder.Order;
+import store.domain.receiveOrder.Orders;
 
 public class StoreOrders implements Orders {
     List<Order> orders;
