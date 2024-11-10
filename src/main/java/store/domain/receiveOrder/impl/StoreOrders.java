@@ -11,6 +11,8 @@ import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotion;
 import store.domain.storeOpen.Promotions;
+import store.dto.FinalOrderDTO;
+import store.dto.FinalPromotionDTO;
 import store.dto.InsufficientStockDTO;
 
 public class StoreOrders implements Orders {
@@ -78,6 +80,24 @@ public class StoreOrders implements Orders {
         }
 
         removeUnAppliedStock(targetsToQuitStock);
+    }
+
+    @Override
+    public List<FinalOrderDTO> getFinalOrderDTOs(){
+        List<FinalOrderDTO> finalOrders = new ArrayList<>();
+        for (Order order: orders){
+            finalOrders.add(order.getFinalOrderDTO());
+        }
+        return finalOrders;
+    }
+
+    @Override
+    public List<FinalPromotionDTO> getFinalPromotionDTOs(){
+        List<FinalPromotionDTO> finalPromotions = new ArrayList<>();
+        for (Order order: orders){
+            finalPromotions.add(order.getFinalPromotionDTO());
+        }
+        return finalPromotions;
     }
     
     private void removeUnAppliedStock(Set<String> targetsToQuitStock){
