@@ -10,7 +10,7 @@ import store.domain.storeOpen.Promotions;
 import store.domain.builder.InputBuilder;
 import store.domain.builder.impl.InventoryBuilder;
 import store.domain.builder.impl.PromotionsBuilder;
-import store.repository.OrdersRepository;
+import store.repository.impl.OrdersRepository;
 import store.repository.SingleRepository;
 import store.repository.impl.InventoryRepository;
 import store.repository.impl.PromotionsRepository;
