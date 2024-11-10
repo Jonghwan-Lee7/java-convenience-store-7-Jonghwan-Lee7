@@ -35,7 +35,7 @@ public class StoreOrders implements Orders {
 
         for (Order order: orders){
             if (isAdditionalOffer(order, promotions, inventory)){
-                ordersWithAdditionalOffer.add(order.toString());
+                ordersWithAdditionalOffer.add(order.getProductName());
             }
         }
         return ordersWithAdditionalOffer;

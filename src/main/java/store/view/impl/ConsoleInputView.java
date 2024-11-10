@@ -1,6 +1,7 @@
 package store.view.impl;
 
 import camp.nextstep.edu.missionutils.Console;
+import store.dto.InsufficientStockDTO;
 import store.view.InputView;
 
 public class ConsoleInputView implements InputView {
@@ -22,7 +23,9 @@ public class ConsoleInputView implements InputView {
     }
 
     @Override
-    public String readChoiceAboutNoPromotion(String productName, int quantity){
+    public String readChoiceAboutNoPromotion(InsufficientStockDTO stockDTO){
+        String productName = stockDTO.productName();
+        int quantity = stockDTO.insufficientCount();
         System.out.printf(PROMOTION_NOT_APPLIED_NOTICE, productName, quantity) ;
         return Console.readLine();
     }

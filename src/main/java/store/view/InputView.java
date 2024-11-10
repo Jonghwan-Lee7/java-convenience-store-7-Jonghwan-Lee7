@@ -1,7 +1,9 @@
 package store.view;
 
+import store.dto.InsufficientStockDTO;
+
 public interface InputView {
     String readOrder();
     String readChoiceAboutFreeAddition(String productName);
-    String readChoiceAboutNoPromotion(String productName, int quantity);
+    String readChoiceAboutNoPromotion(InsufficientStockDTO stockDTO);
 }
