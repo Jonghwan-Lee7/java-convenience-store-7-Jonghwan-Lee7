@@ -6,23 +6,24 @@ import store.domain.storeOpen.Promotion;
 
 public class StoreOrder implements Order {
     private final String productName;
-    private int normalQuantity;
-    private int promotionQuantity;
+    private int normalStock;
+    private int promotionStock;
+    private int promotionAppliedStock = 0;
     private int totalPrice;
-    private int freeQuantity = 0;
+    private int freeStock = 0;
     private final String promotionName;
 
-    private StoreOrder(String productName, int normalQuantity, int promotionQuantity, int price, String promotionName) {
+    private StoreOrder(String productName, int normalStock, int promotionStock, int price, String promotionName) {
         this.productName = productName;
-        this.normalQuantity = normalQuantity;
-        this.promotionQuantity = promotionQuantity;
-        this.totalPrice = (normalQuantity + promotionQuantity) * price;
+        this.normalStock = normalStock;
+        this.promotionStock = promotionStock;
+        this.totalPrice = (normalStock + promotionStock) * price;
         this.promotionName = promotionName;
     }
 
 
-    public static StoreOrder of(String productName, int normalQuantity, int promotionQuantity, int price, String promotionName) {
-        return new StoreOrder(productName, normalQuantity, promotionQuantity, price, promotionName);
+    public static StoreOrder of(String productName, int normalStock, int promotionStock, int price, String promotionName) {
+        return new StoreOrder(productName, normalStock, promotionStock, price, promotionName);
     }
 
     @Override
@@ -40,20 +41,38 @@ public class StoreOrder implements Order {
     public boolean canGetAdditionalOne(Promotion promotion, Inventory inventory) {
         adaptPromotion(promotion);
 
-        boolean isNormalQuantityZero = (normalQuantity == 0);
-        boolean canGetAnotherOne = (promotion.getFreeItemCount(promotionQuantity) != promotion.getFreeItemCount(promotionQuantity + 1));
-        boolean hasEnoughStock = inventory.hasEnoughPromotionStock( productName,promotionQuantity + 1);
+        boolean isNormalStockZero = (normalStock == 0);
+        boolean canGetAnotherOne = (promotion.getFreeItemCount(promotionStock) != promotion.getFreeItemCount(
+                promotionStock + 1));
+        boolean hasEnoughStock = inventory.hasEnoughPromotionStock( productName, promotionStock + 1);
 
-        return isNormalQuantityZero && canGetAnotherOne && hasEnoughStock;
+        return isNormalStockZero && canGetAnotherOne && hasEnoughStock;
     }
 
     @Override
     public int getRegularPriceCount(){
-        return normalQuantity + promotionQuantity - freeQuantity;
+        return normalStock + promotionStock - freeStock;
+    }
+
+    @Override
+    public void updateNormalStock(int stockChange){
+        normalStock += stockChange;
+    }
+
+    @Override
+    public void updatePromotionStock(int stockChange){
+        promotionStock += stockChange;
+    }
+
+    @Override
+    public void removeUnAppliedStock(){
+        normalStock = 0;
+        promotionStock = promotionAppliedStock;
     }
 
     private void adaptPromotion(Promotion promotion) {
-        freeQuantity =  promotion.getFreeItemCount( promotionQuantity );
+        promotionAppliedStock = promotion.getApplicableItemCount(promotionStock);
+        freeStock =  promotion.getFreeItemCount(promotionStock);
     }
 
 

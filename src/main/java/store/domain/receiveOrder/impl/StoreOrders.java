@@ -1,7 +1,11 @@
 package store.domain.receiveOrder.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import store.domain.receiveOrder.Order;
 import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
@@ -50,6 +54,57 @@ public class StoreOrders implements Orders {
         }
         return insufficientStocks;
     }
+
+    @Override
+    public void applyAdditionDecision(Map<String, String> customerDecisions){
+        Map<String,Integer> promotionStockChanges = new HashMap<>();
+
+        for (Map.Entry<String, String> decision : customerDecisions.entrySet()) {
+            if ("Y".equals(decision.getValue())) {
+                promotionStockChanges.put(decision.getKey(), 1);
+            }
+        }
+        applyToPromotionStocks(promotionStockChanges);
+    }
+
+
+    @Override
+    public void applyInsufficientPromotionStock(Map<String, String> customerDecisions){
+        Set<String> targetsToQuitStock = new HashSet<>();
+        for (Map.Entry<String, String> decision : customerDecisions.entrySet()) {
+            if ("N".equals(decision.getValue())) {
+                targetsToQuitStock.add(decision.getKey());
+            }
+        }
+
+        removeUnAppliedStock(targetsToQuitStock);
+    }
+    
+    private void removeUnAppliedStock(Set<String> targetsToQuitStock){
+        for (Order order: orders){
+            String productName =  order.getProductName();
+            if (targetsToQuitStock.contains(productName)){
+                order.removeUnAppliedStock();
+            }
+        }
+    }
+
+    private void applyToPromotionStocks(Map<String,Integer> promotionStockChanges) {
+        for (Order order: orders){
+            String productName = order.getProductName();
+
+            if(promotionStockChanges.containsKey(productName)){
+                int stockChanges = promotionStockChanges.get(productName);
+                updatePromotionStocks(order, stockChanges);
+            }
+        }
+    }
+
+
+    private void updatePromotionStocks(Order order, int stockChange){
+        order.updatePromotionStock(stockChange);
+    }
+
 
     private boolean isPromotionStockInsufficient(Order order, Promotions promotions){
         if ( isPromotionValid(order,promotions)){

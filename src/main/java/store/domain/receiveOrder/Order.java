@@ -8,4 +8,8 @@ public interface Order {
     String getProductName();
     boolean canGetAdditionalOne(Promotion promotion, Inventory inventory);
     int getRegularPriceCount();
+
+    void updateNormalStock(int stockChange);
+    void updatePromotionStock(int stockChange);
+    void removeUnAppliedStock();
 }
