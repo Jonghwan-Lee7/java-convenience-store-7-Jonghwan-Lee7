@@ -5,6 +5,7 @@ import static store.exception.ErrorMessages.NO_SAVED_ORDERS;
 import static store.exception.ErrorMessages.NO_SAVED_PROMOTIONS;
 
 import java.util.List;
+import java.util.Map;
 import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
@@ -40,9 +41,10 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
     }
 
     @Override
-    public void applyCustomerDecisionToOrders(){
+    public void applyAdditionDecision(Map<String, String> customerDecisions){
         Orders orders = ordersRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getMessage()));
+        orders.applyAdditionDecision(customerDecisions);
     }
 
     @Override
@@ -56,6 +58,14 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
 
         return orders.getInsufficientPromotionStocks(promotions);
     }
+
+    @Override
+    public void applyInsufficientPromotionStock(Map<String, String> customerDecisions){
+        Orders orders = ordersRepository.get()
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getMessage()));
+        orders.applyInsufficientPromotionStock(customerDecisions);
+    }
+
 
 
 }
