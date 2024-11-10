@@ -3,10 +3,10 @@ package store.domain.receiveOrder;
 import java.util.List;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
-import store.dto.PromotionStockInsufficientDTO;
+import store.dto.InsufficientStockDTO;
 
 public interface Orders {
     List<Order> getOrders();
     List<String> getOrdersWithAdditionalOffer(Promotions promotions, Inventory inventory);
-    List<PromotionStockInsufficientDTO> getOrdersWithLackPromotionStock(Promotions promotions);
+    List<InsufficientStockDTO> getInsufficientPromotionStocks(Promotions promotions);
 }

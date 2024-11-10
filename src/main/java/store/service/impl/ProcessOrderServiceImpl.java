@@ -8,7 +8,7 @@ import java.util.List;
 import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
-import store.dto.PromotionStockInsufficientDTO;
+import store.dto.InsufficientStockDTO;
 import store.exception.EntityNotFoundException;
 import store.repository.SingleRepository;
 import store.service.ProcessOrderService;
@@ -46,7 +46,7 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
     }
 
     @Override
-    public List<PromotionStockInsufficientDTO> getOrdersWithLackPromotionStock() {
+    public List<InsufficientStockDTO> getInsufficientPromotionStocks() {
         Inventory inventory =  inventoryRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
         Promotions promotions = promotionsRepository.get()
@@ -54,7 +54,7 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
         Orders orders = ordersRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getMessage()));
 
-        return orders.getOrdersWithLackPromotionStock(promotions);
+        return orders.getInsufficientPromotionStocks(promotions);
     }
 
 
