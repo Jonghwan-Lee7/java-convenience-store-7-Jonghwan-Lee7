@@ -36,7 +36,7 @@ public class StorePromotion implements Promotion {
     // 프로모션 재고에서 차감되는 양을 넣을 때의 반환결과가 다르면 이는 프로모션 재고 부족 문제.
     @Override
     public int getApplicableItemCount (int purchaseCount) {
-        return (purchaseCount / (buyCount + getCount))  * (buyCount * getCount);
+        return (purchaseCount / (buyCount + getCount))  * (buyCount + getCount);
     }
 
 

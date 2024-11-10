@@ -51,7 +51,7 @@ public class StoreOrder implements Order {
 
     @Override
     public int getRegularPriceCount(){
-        return normalStock + promotionStock - freeStock;
+        return normalStock + promotionStock - promotionAppliedStock;
     }
 
     @Override
@@ -62,6 +62,11 @@ public class StoreOrder implements Order {
     @Override
     public void updatePromotionStock(int stockChange){
         promotionStock += stockChange;
+        if(stockChange == 1){
+            promotionAppliedStock = promotionStock;
+            freeStock += stockChange;
+        }
+
     }
 
     @Override
