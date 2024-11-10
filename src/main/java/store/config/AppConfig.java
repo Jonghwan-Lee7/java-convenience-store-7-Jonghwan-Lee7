@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import store.controller.StoreController;
 import store.domain.builder.TwoInputsBuilder;
 import store.domain.builder.impl.OrdersBuilder;
+import store.domain.processOrder.Calculator;
+import store.domain.processOrder.impl.MoneyCalculator;
 import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
@@ -14,9 +16,11 @@ import store.repository.impl.OrdersRepository;
 import store.repository.SingleRepository;
 import store.repository.impl.InventoryRepository;
 import store.repository.impl.PromotionsRepository;
+import store.service.FinishOrderService;
 import store.service.ProcessOrderService;
 import store.service.StoreOpenService;
 import store.service.ReceiveOrderService;
+import store.service.impl.FinishOrderServiceImpl;
 import store.service.impl.ProcessOrderServiceImpl;
 import store.service.impl.StoreOpenServiceImpl;
 import store.service.impl.ReceiveOrderServiceImpl;
@@ -48,6 +52,8 @@ public class AppConfig {
     private final static InputBuilder<Inventory> inventoryBuilder = new InventoryBuilder(positiveIntParser);
     private final static TwoInputsBuilder<Orders,Inventory> ordersBuilder = new OrdersBuilder();
 
+    private final static Calculator moneyCalculator = new MoneyCalculator();
+
     private final static StoreOpenService storeOpenService = new StoreOpenServiceImpl(
             promotionsRepository,
             inventoryRepository,
@@ -55,9 +61,10 @@ public class AppConfig {
             inventoryBuilder);
     private final static ReceiveOrderService receiveOrderService = new ReceiveOrderServiceImpl(ordersBuilder,inventoryRepository,ordersRepository);
     private final static ProcessOrderService processOrderService = new ProcessOrderServiceImpl(inventoryRepository, promotionsRepository, ordersRepository);
+    private final static FinishOrderService finishOrderService = new FinishOrderServiceImpl(ordersRepository,inventoryRepository,moneyCalculator);
 
 
-    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,storeOpenService,receiveOrderService,processOrderService,responseValidator);
+    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,storeOpenService,receiveOrderService,processOrderService,finishOrderService,responseValidator);
 
     public static StoreController getStoreController(){
         return storeController;

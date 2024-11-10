@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import store.dto.InsufficientStockDTO;
 import store.dto.StockDTO;
+import store.service.FinishOrderService;
 import store.service.ProcessOrderService;
 import store.service.StoreOpenService;
 import store.service.ReceiveOrderService;
@@ -19,6 +20,7 @@ public class StoreController {
     private final StoreOpenService storeOpenService;
     private final ReceiveOrderService receiveOrderService;
     private final ProcessOrderService processOrderService;
+    private final FinishOrderService finishOrderService;
     private final Validator responseValidator;
 
     public StoreController(
@@ -27,6 +29,7 @@ public class StoreController {
                            StoreOpenService storeOpenService,
                            ReceiveOrderService takeOrderService,
                            ProcessOrderService processOrderService,
+                           FinishOrderService finishOrderService,
                            Validator responseValidator
                            ) {
 
@@ -35,6 +38,7 @@ public class StoreController {
         this.storeOpenService = storeOpenService;
         this.receiveOrderService = takeOrderService;
         this.processOrderService = processOrderService;
+        this.finishOrderService = finishOrderService;
         this.responseValidator = responseValidator;
     }
 
@@ -65,7 +69,10 @@ public class StoreController {
     }
 
     private void finishOrder(){
-
+        String answer = inputView.readDecisionAboutMembership();
+        responseValidator.validate(answer);
+        String receipt = finishOrderService.getTotalReceipt(answer);
+        outputView.printReceipt(receipt);
     }
 
 

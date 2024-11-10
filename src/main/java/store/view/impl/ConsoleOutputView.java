@@ -16,6 +16,13 @@ public class ConsoleOutputView implements OutputView {
         }
     }
 
+    @Override
+    public void printReceipt(String receipt){
+        System.out.println(receipt);
+        printSpace();
+    }
+
+
     private void printWelcomeMessage(){
         System.out.println(WELCOME_MESSAGE);
         System.out.println(NOTICE_CURRENT_STOCKS);

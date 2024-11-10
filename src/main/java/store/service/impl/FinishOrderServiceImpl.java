@@ -7,6 +7,7 @@ import store.domain.processOrder.Calculator;
 import store.domain.processOrder.Membership;
 import store.domain.processOrder.impl.StoreMembership;
 import store.domain.receiveOrder.Orders;
+import store.domain.storeOpen.Inventory;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 import store.exception.EntityNotFoundException;
@@ -15,6 +16,7 @@ import store.service.FinishOrderService;
 
 public class FinishOrderServiceImpl implements FinishOrderService {
     private final SingleRepository<Orders> ordersRepository;
+    private final SingleRepository<Inventory> inventoryRepository;
     private final Calculator moneyCalculator;
 
     private static final String RECEIPT_LOGO = "===========W 편의점=============\n";
@@ -26,12 +28,17 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     private static final String SUMMARY_HEADER = "==============================\n";
 
     public FinishOrderServiceImpl(SingleRepository<Orders> ordersRepository,
+                                  SingleRepository<Inventory> inventoryRepository,
                                   Calculator moneyCalculator) {
+
         this.ordersRepository = ordersRepository;
+        this.inventoryRepository = inventoryRepository;
         this.moneyCalculator = moneyCalculator;
+
     }
 
 
+    @Override
     public String getTotalReceipt(String answer){
         Orders orders = ordersRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getErrorMessage()));
