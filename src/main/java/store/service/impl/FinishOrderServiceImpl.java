@@ -19,13 +19,13 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     private final SingleRepository<Inventory> inventoryRepository;
     private final Calculator moneyCalculator;
 
-    private static final String RECEIPT_LOGO = "===========W 편의점=============\n";
-    private static final String PRODUCT_HEADER_FORMAT = "%-10s %5s %10s\n";
-    private static final String PRODUCT_ITEM_FORMAT = "%-10s %5d %10d\n";
-    private static final String SUMMARY_FORMAT = "%-10s %5s %10d\n";
-    private static final String PROMOTION_FORMAT = "%-10s %5s\n";
-    private static final String PROMOTION_HEADER = "===========증\t정=============\n";
-    private static final String SUMMARY_HEADER = "==============================\n";
+    private static final String RECEIPT_LOGO = "==============W 편의점================\n";
+    private static final String PRODUCT_HEADER_FORMAT = "%-14s %5s %14s\n";
+    private static final String PRODUCT_ITEM_FORMAT = "%-14s %5s %14s\n";
+    private static final String SUMMARY_FORMAT = "%-14s %5s %14s\n";
+    private static final String PROMOTION_FORMAT = "%-14s %5s\n";
+    private static final String PROMOTION_HEADER="=============증     정===============\n";
+    private static final String SUMMARY_HEADER = "====================================\n";
 
     public FinishOrderServiceImpl(SingleRepository<Orders> ordersRepository,
                                   SingleRepository<Inventory> inventoryRepository,
@@ -69,9 +69,9 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
         for (FinalOrderDTO finalOrderDTO : finalOrderDTOs) {
             String productName = finalOrderDTO.productName();
-            int totalStock = finalOrderDTO.normalStockCount() + finalOrderDTO.promotionStockCount();
-            int totalPrice =  totalStock * finalOrderDTO.price();
-            receipt.append(String.format(PRODUCT_ITEM_FORMAT, productName, totalPrice, totalPrice));
+            String totalStock = String.format("%,d",finalOrderDTO.normalStockCount() + finalOrderDTO.promotionStockCount());
+            String totalPrice = String.format("%,d",finalOrderDTO.price());
+            receipt.append(String.format(PRODUCT_ITEM_FORMAT, productName, totalStock, totalPrice));
         }
     }
 
@@ -80,7 +80,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
         for(FinalPromotionDTO finalPromotionDTO : finalPromotionDTOS){
             String productName = finalPromotionDTO.productName();
-            String count = String.valueOf(finalPromotionDTO.freeCount());
+            String count = String.format("%,d",finalPromotionDTO.freeCount());
             receipt.append(String.format(PROMOTION_FORMAT, productName, count));
         }
     }
@@ -104,13 +104,13 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
         receipt.append(SUMMARY_HEADER);
         appendTotalPurchase(receipt, totalCounts, totalPurchaseAmount);
-        receipt.append(String.format(SUMMARY_FORMAT, "행사할인", "", (-1) * totalPromotionAmount));
-        receipt.append(String.format(SUMMARY_FORMAT, "멤버십할인", "", (-1) * membershipDiscountAmount));
-        receipt.append(String.format(SUMMARY_FORMAT, "내실돈", "", amountToPay));
+        receipt.append(String.format(SUMMARY_FORMAT, "행사할인", "", String.format("%,d",(-1) * totalPromotionAmount)));
+        receipt.append(String.format(SUMMARY_FORMAT, "멤버십할인", "", String.format("%,d",(-1) * membershipDiscountAmount)));
+        receipt.append(String.format(SUMMARY_FORMAT, "내실돈", "", String.format("%,d",amountToPay)));
     }
 
     private void appendTotalPurchase(StringBuilder totalSummary, int totalCounts, int totalPurchaseAmount) {
-        totalSummary.append(String.format(PRODUCT_HEADER_FORMAT, "총구매액", totalCounts, totalPurchaseAmount));
+        totalSummary.append(String.format(PRODUCT_HEADER_FORMAT, "총구매액", String.format("%,d",totalCounts), String.format("%,d",totalPurchaseAmount)));
     }
 
     private int calculateTotalCounts(List<FinalOrderDTO> finalOrderDTOs) {
