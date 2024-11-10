@@ -38,9 +38,8 @@ public class StoreFileReader implements FileReader {
 
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(DELIMITER);
-                Collections.addAll(contents, parts); // 분리된 내용을 contents에 추가
+                String[] parts = scanner.nextLine().split(DELIMITER);
+                Collections.addAll(contents, parts);
             }
         }
 
