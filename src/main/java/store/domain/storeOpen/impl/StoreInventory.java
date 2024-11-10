@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Product;
+import store.dto.FinalOrderDTO;
 import store.dto.StockDTO;
 import store.utils.DTOMapper;
 
@@ -52,6 +53,18 @@ public class StoreInventory implements Inventory {
         validatePurchase(productName);
         Product product = products.get(productName);
         return product.hasEnoughPromotionStock(promotionQuantity);
+    }
+
+    @Override
+    public void updateStocks(List<FinalOrderDTO> finalOrderDTOS){
+        for (FinalOrderDTO finalOrderDTO : finalOrderDTOS) {
+            String productName = finalOrderDTO.productName();
+            int soldNormalStock = finalOrderDTO.normalStockCount();
+            int soldPromotionStock = finalOrderDTO.promotionStockCount();
+            Product product = products.get(productName);
+            product.updateStocks(soldNormalStock, soldPromotionStock);
+        }
+
     }
 
 

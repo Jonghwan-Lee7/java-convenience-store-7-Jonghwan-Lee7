@@ -45,10 +45,16 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
         List<FinalOrderDTO>  finalOrderDTOs = orders.getFinalOrderDTOs();
         List<FinalPromotionDTO> finalPromotionDTOS = orders.getFinalPromotionDTOs();
-
         StringBuilder receipt =  makeReceipt(answer, finalOrderDTOs, finalPromotionDTOS);
+        updateInventory(finalOrderDTOs);
 
         return receipt.toString();
+    }
+
+    private void updateInventory(List<FinalOrderDTO> finalOrderDTOs) {
+        Inventory inventory =  inventoryRepository.get()
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getErrorMessage()));
+        inventory.updateStocks(finalOrderDTOs);
     }
 
     private StringBuilder makeReceipt(String answer,
