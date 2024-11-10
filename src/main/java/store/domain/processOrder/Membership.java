@@ -1,5 +1,5 @@
 package store.domain.processOrder;
 
 public interface Membership {
-    int getDiscountAmount(int amount);
+    int getDiscountAmount(int totalPurchaseAmount, int promotionAppliedAmount);
 }

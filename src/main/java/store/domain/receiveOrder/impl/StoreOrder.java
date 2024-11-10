@@ -86,8 +86,10 @@ public class StoreOrder implements Order {
     @Override
     public FinalPromotionDTO getFinalPromotionDTO(){
         int freeCount = freeStock;
+        int promotionAppliedCount = promotionAppliedStock;
         int discountAmount = freeCount * price;
-        return new FinalPromotionDTO(productName,freeCount,discountAmount);
+
+        return new FinalPromotionDTO(productName,freeCount,promotionAppliedCount,discountAmount);
     }
 
     private void adaptPromotion(Promotion promotion) {

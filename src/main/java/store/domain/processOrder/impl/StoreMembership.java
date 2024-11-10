@@ -23,9 +23,10 @@ public class StoreMembership implements Membership {
     }
 
     @Override
-    public int getDiscountAmount(int amount){
+    public int getDiscountAmount(int totalPurchaseAmount, int promotionAppliedAmount){
+        int discountAppliedAmount = totalPurchaseAmount - promotionAppliedAmount;
         if(canApplyDiscount){
-            return min( DISCOUNT_LIMIT,  (int) Math.floor(amount * DISCOUNT_RATE) );
+            return min( DISCOUNT_LIMIT,  (int) Math.floor(discountAppliedAmount * DISCOUNT_RATE) );
         }
         return NO_DISCOUNT;
     }

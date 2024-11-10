@@ -1,4 +1,4 @@
 package store.dto;
 
-public record FinalPromotionDTO(String productName, int freeCount,int discountAmount) {
+public record FinalPromotionDTO(String productName, int freeCount, int promotionAppliedCount, int discountAmount) {
 }

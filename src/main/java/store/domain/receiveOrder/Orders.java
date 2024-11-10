@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
+import store.dto.FinalOrderDTO;
+import store.dto.FinalPromotionDTO;
 import store.dto.InsufficientStockDTO;
 
 public interface Orders {
@@ -13,4 +15,7 @@ public interface Orders {
 
     void applyAdditionDecision(Map<String, String> customerDecisions);
     void applyInsufficientPromotionStock(Map<String, String> customerDecisions);
+
+    List<FinalOrderDTO> getFinalOrderDTOs();
+    List<FinalPromotionDTO> getFinalPromotionDTOs();
 }
