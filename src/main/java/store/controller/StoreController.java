@@ -3,6 +3,7 @@ package store.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import store.dto.DecisionNeededDTO;
 import store.dto.InsufficientStockDTO;
 import store.dto.StockDTO;
 import store.service.FinishOrderService;
@@ -62,8 +63,13 @@ public class StoreController {
     }
 
     private void processOrder(){
-        processAddition();
-        processNoPromotion();
+        DecisionNeededDTO decisionNeededDTO =  processOrderService.getOrders();
+        List<String> ordersWithPossibleAddition = decisionNeededDTO.OrdersWithPossibleAddition();
+        List<InsufficientStockDTO> insufficientStockDTOs = decisionNeededDTO.insufficientPromotionStocks();
+
+
+        processAddition(ordersWithPossibleAddition);
+        processNoPromotion(insufficientStockDTOs);
     }
 
 
@@ -121,19 +127,17 @@ public class StoreController {
     }
 
 
-    private void processAddition() {
-        List<String> possibleProductsNames = processOrderService.getOrdersWithPossibleAddition();
-        if (possibleProductsNames.isEmpty()) {
+    private void processAddition(List<String> ordersWithPossibleAddition) {
+        if (ordersWithPossibleAddition.isEmpty()) {
             return;
         }
 
-        Map<String, String> customerDecisions = collectAdditionDecisions(possibleProductsNames);
+        Map<String, String> customerDecisions = collectAdditionDecisions(ordersWithPossibleAddition);
         processOrderService.applyAdditionDecision(customerDecisions);
     }
 
 
-    private void processNoPromotion() {
-        List<InsufficientStockDTO> insufficientStockDTOs = processOrderService.getInsufficientPromotionStocks();
+    private void processNoPromotion(List<InsufficientStockDTO> insufficientStockDTOs) {
         if (insufficientStockDTOs.isEmpty()) {
             return;
         }

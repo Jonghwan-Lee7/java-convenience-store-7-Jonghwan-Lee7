@@ -4,20 +4,23 @@ import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 import static store.exception.ErrorMessages.NO_SAVED_ORDERS;
 import static store.exception.ErrorMessages.NO_SAVED_PROMOTIONS;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import store.domain.receiveOrder.Orders;
 import store.domain.storeOpen.Inventory;
 import store.domain.storeOpen.Promotions;
+import store.dto.DecisionNeededDTO;
 import store.dto.InsufficientStockDTO;
 import store.exception.EntityNotFoundException;
 import store.repository.SingleRepository;
 import store.service.ProcessOrderService;
 
 public class ProcessOrderServiceImpl implements ProcessOrderService {
-    private SingleRepository<Inventory> inventoryRepository;
-    private SingleRepository<Promotions> promotionsRepository;
-    private SingleRepository<Orders> ordersRepository;
+    private final SingleRepository<Inventory> inventoryRepository;
+    private final SingleRepository<Promotions> promotionsRepository;
+    private final SingleRepository<Orders> ordersRepository;
 
     public ProcessOrderServiceImpl(SingleRepository<Inventory> inventoryRepository,
                                    SingleRepository<Promotions> promotionsRepository,
@@ -28,9 +31,17 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
         this.ordersRepository = ordersRepository;
     }
 
-
     @Override
-    public List<String> getOrdersWithPossibleAddition() {
+    public DecisionNeededDTO getOrders(){
+        List<String> ordersWithPossibleAddition = getOrdersWithPossibleAddition();
+        Set<String> decisionExceptions = new HashSet<>(ordersWithPossibleAddition);
+        List<InsufficientStockDTO> insufficientPromotionStocks = getInsufficientPromotionStocks(decisionExceptions);
+
+        return new DecisionNeededDTO(ordersWithPossibleAddition, insufficientPromotionStocks);
+    }
+
+
+    private List<String> getOrdersWithPossibleAddition() {
         Inventory inventory =  inventoryRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
         Promotions promotions = promotionsRepository.get()
@@ -47,16 +58,14 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
         orders.applyAdditionDecision(customerDecisions);
     }
 
-    @Override
-    public List<InsufficientStockDTO> getInsufficientPromotionStocks() {
-        Inventory inventory =  inventoryRepository.get()
-                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
+
+    private List<InsufficientStockDTO> getInsufficientPromotionStocks(Set<String> decisionExceptions) {
         Promotions promotions = promotionsRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_PROMOTIONS.getMessage()));
         Orders orders = ordersRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getMessage()));
 
-        return orders.getInsufficientPromotionStocks(promotions);
+        return orders.getInsufficientPromotionStocks(promotions,decisionExceptions);
     }
 
     @Override

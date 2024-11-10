@@ -44,11 +44,12 @@ public class StoreOrders implements Orders {
     }
 
     @Override
-    public List<InsufficientStockDTO> getInsufficientPromotionStocks(Promotions promotions){
+    public List<InsufficientStockDTO> getInsufficientPromotionStocks(Promotions promotions,
+                                                                     Set<String> decisionExceptions){
         List<InsufficientStockDTO> insufficientStocks = new ArrayList<>();
 
         for (Order order: orders){
-            if (isPromotionStockInsufficient(order, promotions)){
+            if ( isPromotionStockInsufficient(order, promotions, decisionExceptions)){
                 int insufficientCount = order.getRegularPriceCount();
                 String productName = order.getProductName();
                 insufficientStocks.add(new InsufficientStockDTO(productName, insufficientCount));
@@ -131,7 +132,11 @@ public class StoreOrders implements Orders {
     }
 
 
-    private boolean isPromotionStockInsufficient(Order order, Promotions promotions){
+    private boolean isPromotionStockInsufficient(Order order, Promotions promotions,Set<String> decisionExceptions){
+        String productName = order.getProductName();
+        if (decisionExceptions.contains(productName)) {
+            return false;
+        }
         if ( isPromotionValid(order,promotions)){
             return order.getRegularPriceCount() != 0;
         }
