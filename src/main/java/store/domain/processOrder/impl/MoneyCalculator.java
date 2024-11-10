@@ -10,7 +10,7 @@ public class MoneyCalculator implements Calculator {
     @Override
     public int calculateTotalPurchaseAmount(List<FinalOrderDTO> finalOrderDTOs){
         return finalOrderDTOs.stream()
-                .mapToInt(eachDTO -> (eachDTO.normalStockCount() + eachDTO.promotionStockCount()) * eachDTO.price())
+                .mapToInt(FinalOrderDTO::price)
                 .sum();
     }
 
