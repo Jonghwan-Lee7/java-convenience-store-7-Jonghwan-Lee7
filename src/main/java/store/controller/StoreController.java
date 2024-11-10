@@ -3,20 +3,28 @@ package store.controller;
 import java.util.List;
 import store.dto.StockDTO;
 import store.service.StoreOpenService;
+import store.service.TakeOrderService;
 import store.view.InputView;
 import store.view.OutputView;
 
 public class StoreController {
-    private final StoreOpenService storeOpenService;
+
     private final OutputView outputView;
     private final InputView inputView;
+    private final StoreOpenService storeOpenService;
+    private final TakeOrderService takeOrderService;
 
-    public StoreController(StoreOpenService storeOpenService,
+    public StoreController(
                            OutputView outputView,
-                           InputView inputView) {
-        this.storeOpenService = storeOpenService;
+                           InputView inputView,
+                           StoreOpenService storeOpenService,
+                           TakeOrderService takeOrderService
+                           ) {
+
         this.outputView = outputView;
         this.inputView = inputView;
+        this.storeOpenService = storeOpenService;
+        this.takeOrderService = takeOrderService;
     }
 
     public void run(){
@@ -36,5 +44,6 @@ public class StoreController {
 
     private void takeOrder(){
         String rawOrder = inputView.readOrder();
+        takeOrderService.takeOrder(rawOrder);
     }
 }
