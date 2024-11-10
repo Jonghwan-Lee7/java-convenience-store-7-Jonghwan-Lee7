@@ -36,18 +36,23 @@ public class StoreInventory implements Inventory {
 
     @Override
     public List<Integer> getPurchaseDetails(String productName, int quantity){
-        validatePurchase(productName, quantity);
+        validatePurchase(productName);
         Product product = products.get(productName);
         return product.getPurchaseDetails(quantity);
     }
 
+    @Override
+    public String getPromotionName(String productName){
+        Product product = products.get(productName);
+        return product.getPromotionName();
+    }
 
-    private void validatePurchase(String productName, int quantity) {
+
+    private void validatePurchase(String productName) {
 
         if ( !products.containsKey(productName)) {
             throw new IllegalArgumentException(INVALID_PRODUCT_NAME.getErrorMessage());
         }
 
-        Product product = products.get(productName);
     }
 }

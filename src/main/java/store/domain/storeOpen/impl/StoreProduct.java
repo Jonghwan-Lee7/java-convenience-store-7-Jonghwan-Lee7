@@ -82,6 +82,7 @@ public class StoreProduct implements Product {
         return promotionName;
     }
 
+
     private void validatePurchase(int purchaseQuantity){
         if (purchaseQuantity > normalStock + promotionStock){
             throw new IllegalArgumentException(MORE_THAN_TOTAL_STOCK.getErrorMessage());

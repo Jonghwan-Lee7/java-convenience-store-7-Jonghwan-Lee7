@@ -7,17 +7,18 @@ public class StoreOrder implements Order {
     private int normalQuantity;
     private int promotionQuantity;
     private int totalPrice;
-    private int discountAmount = 0;
+    private final String promotionName;
 
-    private StoreOrder(String productName, int normalQuantity, int promotionQuantity, int price) {
+    private StoreOrder(String productName, int normalQuantity, int promotionQuantity, int price, String promotionName) {
         this.productName = productName;
         this.normalQuantity = normalQuantity;
         this.promotionQuantity = promotionQuantity;
         this.totalPrice = (normalQuantity + promotionQuantity) * price;
+        this.promotionName = promotionName;
     }
 
 
-    public static StoreOrder of(String productName, int normalQuantity, int promotionQuantity, int price) {
-        return new StoreOrder(productName, normalQuantity, promotionQuantity, price);
+    public static StoreOrder of(String productName, int normalQuantity, int promotionQuantity, int price, String promotionName) {
+        return new StoreOrder(productName, normalQuantity, promotionQuantity, price, promotionName);
     }
 }

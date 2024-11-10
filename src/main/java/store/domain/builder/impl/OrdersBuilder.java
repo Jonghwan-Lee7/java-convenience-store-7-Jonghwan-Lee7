@@ -29,8 +29,8 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
     }
 
     private Order buildOrder(String rawOrder, Inventory inventory) {
-        validate(rawOrder,inventory);
-        String[] orderDetails =  extractproductDetails(rawOrder);
+        validate(rawOrder);
+        String[] orderDetails =  extractProductDetails(rawOrder);
         String productName = orderDetails[0];
         int quantity = Integer.parseInt(orderDetails[1]);
         return generateOrder(productName,quantity,inventory);
@@ -41,19 +41,20 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
         int promotionQuantity = details.getFirst();
         int normalQuantity = quantity - promotionQuantity;
         int price = details.getLast();
+        String promotionName = inventory.getPromotionName(productName);
 
-        return StoreOrder.of( productName,normalQuantity,promotionQuantity, price);
+        return StoreOrder.of( productName,normalQuantity,promotionQuantity, price, promotionName);
 
     }
 
 
-    private void validate(String rawOrder,Inventory inventory) {
+    private void validate(String rawOrder) {
         if (!rawOrder.matches(REGEX_FOR_ORDER)){
             throw new IllegalArgumentException(INVALID_FORMAT.getErrorMessage());
         }
     }
 
-    private String[] extractproductDetails(String rawOrder) {
+    private String[] extractProductDetails(String rawOrder) {
         String[] orderDetails = new String[2];
         orderDetails[0] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$1");
         orderDetails[1] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$2");
