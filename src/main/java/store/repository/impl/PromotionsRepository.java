@@ -5,7 +5,6 @@ import store.domain.storeOpen.Promotions;
 import store.repository.SingleRepository;
 
 public class PromotionsRepository implements SingleRepository<Promotions> {
-
     private Promotions promotions;
 
     @Override

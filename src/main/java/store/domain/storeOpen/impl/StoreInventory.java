@@ -47,6 +47,13 @@ public class StoreInventory implements Inventory {
         return product.getPromotionName();
     }
 
+    @Override
+    public boolean hasEnoughPromotionStock(String productName, int promotionQuantity){
+        validatePurchase(productName);
+        Product product = products.get(productName);
+        return product.hasEnoughPromotionStock(promotionQuantity);
+    }
+
 
     private void validatePurchase(String productName) {
 

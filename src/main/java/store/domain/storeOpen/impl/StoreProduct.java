@@ -82,6 +82,14 @@ public class StoreProduct implements Product {
         return promotionName;
     }
 
+    @Override
+    public boolean hasEnoughPromotionStock(int promotionQuantity){
+        if (promotionQuantity > this.promotionStock){
+            return false;
+        }
+        return true;
+    }
+
 
     private void validatePurchase(int purchaseQuantity){
         if (purchaseQuantity > normalStock + promotionStock){
