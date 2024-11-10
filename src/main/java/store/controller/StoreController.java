@@ -13,6 +13,7 @@ import store.utils.Validator;
 import store.view.InputView;
 import store.view.OutputView;
 
+
 public class StoreController {
 
     private final OutputView outputView;
@@ -59,8 +60,7 @@ public class StoreController {
     }
 
     private void takeOrder(){
-        String rawOrder = inputView.readOrder();
-        receiveOrderService.takeOrder(rawOrder);
+        takeValidOrder();
     }
 
     private void processOrder(){
@@ -68,11 +68,37 @@ public class StoreController {
         processNoPromotion();
     }
 
+
     private void finishOrder(){
-        String answer = inputView.readDecisionAboutMembership();
-        responseValidator.validate(answer);
+        String answer = getValidMemberShipAnswer();
         String receipt = finishOrderService.getTotalReceipt(answer);
         outputView.printReceipt(receipt);
+    }
+
+
+    private void takeValidOrder(){
+        while(true){
+            try {
+                String rawOrder = inputView.readOrder();
+                receiveOrderService.takeOrder(rawOrder);
+                return;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
+    }
+
+
+    private String getValidMemberShipAnswer(){
+        while(true){
+            try {
+                String answer = inputView.readDecisionAboutMembership();
+                responseValidator.validate(answer);
+                return answer;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
     }
 
 
@@ -86,17 +112,6 @@ public class StoreController {
         processOrderService.applyAdditionDecision(customerDecisions);
     }
 
-    private Map<String, String> collectCustomerAdditionDecisions(List<String> possibleProductsNames) {
-        Map<String, String> customerDecisions = new HashMap<>();
-
-        for (String productName : possibleProductsNames) {
-            String answer = inputView.readChoiceAboutFreeAddition(productName);
-            responseValidator.validate(answer);
-            customerDecisions.put(productName, answer);
-        }
-        return customerDecisions;
-    }
-
 
     private void processNoPromotion() {
         List<InsufficientStockDTO> insufficientStockDTOs = processOrderService.getInsufficientPromotionStocks();
@@ -108,18 +123,53 @@ public class StoreController {
         processOrderService.applyInsufficientPromotionStock(customerDecisions);
     }
 
+    private Map<String, String> collectCustomerAdditionDecisions(List<String> possibleProductsNames) {
+        Map<String, String> customerDecisions = new HashMap<>();
+
+        for (String productName : possibleProductsNames) {
+            String answer = getValidAdditionAnswer(productName);
+            customerDecisions.put(productName, answer);
+        }
+        return customerDecisions;
+    }
+
+    private String getValidAdditionAnswer(String productName) {
+        while (true)
+            try{
+                String answer = inputView.readChoiceAboutFreeAddition(productName);
+                responseValidator.validate(answer);
+                return answer;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+    }
+
+
     private Map<String, String> collectCustomerNoPromotionDecisions(List<InsufficientStockDTO> insufficientStockDTOs) {
         Map<String, String> customerDecisions = new HashMap<>();
 
         for (InsufficientStockDTO insufficientStockDTO : insufficientStockDTOs) {
             String productName = insufficientStockDTO.productName();
-
-            String answer = inputView.readChoiceAboutNoPromotion(insufficientStockDTO);
-            responseValidator.validate(answer);
+            String answer = getValidNoPromotionAnswer(insufficientStockDTO);
             customerDecisions.put(productName, answer);
         }
         return customerDecisions;
     }
+
+    private String getValidNoPromotionAnswer(InsufficientStockDTO insufficientStockDTO) {
+        while (true) {
+            String answer = inputView.readChoiceAboutNoPromotion(insufficientStockDTO);
+            try {
+                responseValidator.validate(answer);
+                return answer;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
+    }
+
+
+
 
 
 }
