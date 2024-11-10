@@ -94,8 +94,13 @@ public class StoreOrders implements Orders {
     @Override
     public List<FinalPromotionDTO> getFinalPromotionDTOs(){
         List<FinalPromotionDTO> finalPromotions = new ArrayList<>();
+
         for (Order order: orders){
-            finalPromotions.add(order.getFinalPromotionDTO());
+            FinalPromotionDTO finalPromotionDTO = order.getFinalPromotionDTO();
+            if (finalPromotionDTO.freeCount() == 0) {
+                continue;
+            }
+            finalPromotions.add(finalPromotionDTO);
         }
         return finalPromotions;
     }
