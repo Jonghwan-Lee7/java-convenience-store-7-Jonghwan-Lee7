@@ -42,24 +42,22 @@ public class StoreController {
         this.finishOrderService = finishOrderService;
         this.responseValidator = responseValidator;
     }
+    public void openStore(){
+        storeOpenService.loadPromotions();
+        storeOpenService.loadInventory();
+    }
 
-    public void run(){
-        openStore();
+    public void purchase(){
         takeOrder();
         processOrder();
         finishOrder();
+        decideRePurchaseOrNot();
     }
 
-    private void openStore(){
-        storeOpenService.loadPromotions();
-        storeOpenService.loadInventory();
-
-        List<StockDTO> stockDTOs = storeOpenService.createStockDTOs();
-
-        outputView.printStocks(stockDTOs);
-    }
 
     private void takeOrder(){
+        List<StockDTO> stockDTOs = storeOpenService.createStockDTOs();
+        outputView.printStocks(stockDTOs);
         takeValidOrder();
     }
 
@@ -74,6 +72,27 @@ public class StoreController {
         String receipt = finishOrderService.getTotalReceipt(answer);
         outputView.printReceipt(receipt);
     }
+
+    private void decideRePurchaseOrNot(){
+        String answer = getValidRePurchaseDecision();
+        if (answer.equals("Y")){
+            purchase();
+        }
+
+    }
+
+    private String getValidRePurchaseDecision(){
+        while(true){
+            try{
+                String answer =  inputView.readDecisionAboutRePurchase();
+                responseValidator.validate(answer);
+                return answer;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
+    }
+
 
 
     private void takeValidOrder(){
@@ -108,7 +127,7 @@ public class StoreController {
             return;
         }
 
-        Map<String, String> customerDecisions = collectCustomerAdditionDecisions(possibleProductsNames);
+        Map<String, String> customerDecisions = collectAdditionDecisions(possibleProductsNames);
         processOrderService.applyAdditionDecision(customerDecisions);
     }
 
@@ -123,7 +142,7 @@ public class StoreController {
         processOrderService.applyInsufficientPromotionStock(customerDecisions);
     }
 
-    private Map<String, String> collectCustomerAdditionDecisions(List<String> possibleProductsNames) {
+    private Map<String, String> collectAdditionDecisions(List<String> possibleProductsNames) {
         Map<String, String> customerDecisions = new HashMap<>();
 
         for (String productName : possibleProductsNames) {

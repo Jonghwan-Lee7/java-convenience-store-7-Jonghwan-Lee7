@@ -19,7 +19,6 @@ public class ConsoleOutputView implements OutputView {
     @Override
     public void printReceipt(String receipt){
         System.out.println(receipt);
-        printSpace();
     }
 
     @Override
