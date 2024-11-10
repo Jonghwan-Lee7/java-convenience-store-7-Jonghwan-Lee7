@@ -42,6 +42,7 @@ public class StoreController {
         openStore();
         takeOrder();
         processOrder();
+        finishOrder();
     }
 
     private void openStore(){
@@ -62,6 +63,11 @@ public class StoreController {
         processAddition();
         processNoPromotion();
     }
+
+    private void finishOrder(){
+
+    }
+
 
     private void processAddition() {
         List<String> possibleProductsNames = processOrderService.getOrdersWithPossibleAddition();

@@ -32,7 +32,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     }
 
 
-    public void getTotalReceipt(String answer){
+    public String getTotalReceipt(String answer){
         Orders orders = ordersRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getErrorMessage()));
 
@@ -40,6 +40,8 @@ public class FinishOrderServiceImpl implements FinishOrderService {
         List<FinalPromotionDTO> finalPromotionDTOS = orders.getFinalPromotionDTOs();
 
         StringBuilder receipt =  makeReceipt(answer, finalOrderDTOs, finalPromotionDTOS);
+
+        return receipt.toString();
     }
 
     private StringBuilder makeReceipt(String answer,
@@ -50,7 +52,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
         receipt.append(RECEIPT_LOGO);
         addProductList(receipt,finalOrderDTOs);
         addPromotionSection(receipt,finalPromotionDTOs);
-        receipt.append(generateTotalSummary(answer, finalOrderDTOs, finalPromotionDTOs));
+        generateTotalSummary(receipt,answer, finalOrderDTOs, finalPromotionDTOs);
 
         return receipt;
     }
@@ -76,34 +78,54 @@ public class FinishOrderServiceImpl implements FinishOrderService {
         }
     }
 
-    private StringBuilder generateTotalSummary(String answer,
+    private void generateTotalSummary(StringBuilder receipt,
+                                               String answer,
                                                List<FinalOrderDTO> finalOrderDTOs,
                                                List<FinalPromotionDTO> finalPromotionDTOs) {
-        StringBuilder totalSummary = new StringBuilder();
-        totalSummary.append(SUMMARY_HEADER);
 
-        int totalCounts = moneyCalculator.calculateTotalCounts(finalOrderDTOs);
-        int totalPurchaseAmount = moneyCalculator.calculateTotalPurchaseAmount(finalOrderDTOs);
-        int totalPromotionAmount = moneyCalculator.calculateTotalPromotionAmount(finalPromotionDTOs);
-        int promotionAppliedAmount = moneyCalculator.calculatePromotionAppliedAmount(finalPromotionDTOs);
-        int membershipDiscountAmount = getMembershipDiscountAmount(answer, totalPurchaseAmount, promotionAppliedAmount);
-        int amountToPay = moneyCalculator.calculateAmountToPay(totalPurchaseAmount, totalPromotionAmount, membershipDiscountAmount);
+        int totalCounts = calculateTotalCounts(finalOrderDTOs);
+        int totalPurchaseAmount = calculateTotalPurchaseAmount(finalOrderDTOs);
+        int totalPromotionAmount = calculateTotalPromotionAmount(finalPromotionDTOs);
+        int membershipDiscountAmount = calculateMembershipDiscount(answer, totalPurchaseAmount, finalPromotionDTOs);
+        int amountToPay = calculateAmountToPay(totalPurchaseAmount, totalPromotionAmount, membershipDiscountAmount);
 
-        appendSummaryDetails(totalSummary, totalCounts, totalPurchaseAmount, totalPromotionAmount, membershipDiscountAmount, amountToPay);
-
-        return totalSummary;
+        appendSummaryDetails(receipt, totalCounts, totalPurchaseAmount, totalPromotionAmount, membershipDiscountAmount, amountToPay);
     }
 
-
-    private void appendSummaryDetails(StringBuilder totalSummary, int totalCounts, int totalPurchaseAmount,
+    private void appendSummaryDetails(StringBuilder receipt, int totalCounts, int totalPurchaseAmount,
                                       int totalPromotionAmount, int membershipDiscountAmount, int amountToPay) {
-        totalSummary.append(String.format(PRODUCT_HEADER_FORMAT, "총구매액", totalCounts, totalPurchaseAmount));
-        totalSummary.append(String.format(SUMMARY_FORMAT, "행사할인", "", (-1) * totalPromotionAmount));
-        totalSummary.append(String.format(SUMMARY_FORMAT, "멤버십할인", "", (-1) * membershipDiscountAmount));
-        totalSummary.append(String.format(SUMMARY_FORMAT, "내실돈", "", amountToPay));
+
+        receipt.append(SUMMARY_HEADER);
+        appendTotalPurchase(receipt, totalCounts, totalPurchaseAmount);
+        receipt.append(String.format(SUMMARY_FORMAT, "행사할인", "", (-1) * totalPromotionAmount));
+        receipt.append(String.format(SUMMARY_FORMAT, "멤버십할인", "", (-1) * membershipDiscountAmount));
+        receipt.append(String.format(SUMMARY_FORMAT, "내실돈", "", amountToPay));
     }
 
+    private void appendTotalPurchase(StringBuilder totalSummary, int totalCounts, int totalPurchaseAmount) {
+        totalSummary.append(String.format(PRODUCT_HEADER_FORMAT, "총구매액", totalCounts, totalPurchaseAmount));
+    }
 
+    private int calculateTotalCounts(List<FinalOrderDTO> finalOrderDTOs) {
+        return moneyCalculator.calculateTotalCounts(finalOrderDTOs);
+    }
+
+    private int calculateTotalPurchaseAmount(List<FinalOrderDTO> finalOrderDTOs) {
+        return moneyCalculator.calculateTotalPurchaseAmount(finalOrderDTOs);
+    }
+
+    private int calculateTotalPromotionAmount(List<FinalPromotionDTO> finalPromotionDTOs) {
+        return moneyCalculator.calculateTotalPromotionAmount(finalPromotionDTOs);
+    }
+
+    private int calculateMembershipDiscount(String answer, int totalPurchaseAmount, List<FinalPromotionDTO> finalPromotionDTOs) {
+        int promotionAppliedAmount = moneyCalculator.calculatePromotionAppliedAmount(finalPromotionDTOs);
+        return getMembershipDiscountAmount(answer, totalPurchaseAmount, promotionAppliedAmount);
+    }
+
+    private int calculateAmountToPay(int totalPurchaseAmount, int totalPromotionAmount, int membershipDiscountAmount) {
+        return totalPurchaseAmount - totalPromotionAmount - membershipDiscountAmount;
+    }
 
     private int getMembershipDiscountAmount(String answer, int totalPurchaseAmount, int promotionAppliedAmount){
         Membership storeMembership = StoreMembership.create(answer);
