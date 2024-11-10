@@ -1,5 +1,7 @@
 package store.utils;
 
+import static store.exception.ErrorMessages.INVALID_DATE_FORMAT;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -9,7 +11,7 @@ public class LocalDateParser implements SingleParser<LocalDate> {
         try {
             return LocalDate.parse(rawDate);
         } catch (DateTimeParseException e) {
-            System.out.println("날짜 형식이 옳바르지 않습니다");
+            System.out.println(INVALID_DATE_FORMAT.getErrorMessage());
         }
 
         return null;
