@@ -70,5 +70,9 @@ public class AppConfig {
         return storeController;
     }
 
+    public static OutputView getConsoleOutputView(){
+        return consoleOutputView;
+    }
+
 
 }

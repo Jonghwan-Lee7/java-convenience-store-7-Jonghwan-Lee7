@@ -22,6 +22,12 @@ public class ConsoleOutputView implements OutputView {
         printSpace();
     }
 
+    @Override
+    public void printError(Exception e){
+        System.out.println(e.getMessage());
+        printSpace();
+    }
+
 
     private void printWelcomeMessage(){
         System.out.println(WELCOME_MESSAGE);
