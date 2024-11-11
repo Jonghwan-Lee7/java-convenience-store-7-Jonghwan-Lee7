@@ -72,7 +72,7 @@ public class StoreInventory implements Inventory {
     public void validateProductPromotion(Set<String> promotions){
         for ( Product product:  products.values()){
             String promotionName  = product.getPromotionName();
-            if (promotionName == null || !promotions.contains(promotionName)){
+            if (promotionName != null && !promotions.contains(promotionName)){
                 throw new IllegalArgumentException(INVALID_PROMOTION_NAME.getErrorMessage());
             }
 
