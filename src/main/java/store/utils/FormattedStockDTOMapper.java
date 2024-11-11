@@ -3,9 +3,9 @@ package store.utils;
 import store.domain.model.Product;
 import store.dto.FormattedStockDTO;
 
-public class DTOMapper {
+public class FormattedStockDTOMapper {
 
-    private DTOMapper() {
+    private FormattedStockDTOMapper() {
     }
 
     public static FormattedStockDTO toStockDTO(Product product, String productName) {

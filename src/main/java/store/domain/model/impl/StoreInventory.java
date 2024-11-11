@@ -11,7 +11,7 @@ import store.domain.model.Product;
 import store.domain.model.Inventory;
 import store.dto.FinalOrderDTO;
 import store.dto.FormattedStockDTO;
-import store.utils.DTOMapper;
+import store.utils.FormattedStockDTOMapper;
 
 public class StoreInventory implements Inventory {
     private final Map<String, Product> products;
@@ -30,7 +30,7 @@ public class StoreInventory implements Inventory {
 
         for (String productName : products.keySet()) {
             Product product = products.get(productName);
-            FormattedStockDTO formattedStockDTO =  DTOMapper.toStockDTO(product,productName);
+            FormattedStockDTO formattedStockDTO =  FormattedStockDTOMapper.toStockDTO(product,productName);
             formattedStockDTOS.add(formattedStockDTO);
         }
         return formattedStockDTOS;
