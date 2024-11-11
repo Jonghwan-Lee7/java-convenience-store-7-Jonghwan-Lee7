@@ -253,6 +253,15 @@
 
 ---
 
+## ❓ 테스트 내역
+<img width="1050" alt="스크린샷 2024-11-11 오후 11 54 04" src="https://github.com/user-attachments/assets/d0460b85-6609-4f44-a1e6-0b7afe02d9d9">
+<img width="1052" alt="스크린샷 2024-11-11 오후 11 54 14" src="https://github.com/user-attachments/assets/df4a67b2-5302-493f-8f9b-4deaf7addd34">
+
+<img width="1065" alt="스크린샷 2024-11-11 오후 11 54 26" src="https://github.com/user-attachments/assets/42728af8-30e4-4751-b13c-e89ec55e9f97">
+
+
+---
+
 ## 🌊 프로그램 플로우 및 구현한 기능
 
 
