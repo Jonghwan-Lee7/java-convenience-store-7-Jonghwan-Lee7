@@ -12,8 +12,12 @@ import store.domain.model.impl.StoreOrders;
 import store.domain.model.Inventory;
 
 public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
-    private final String DELIMITER = ",";
-    private final String REGEX_FOR_ORDER = "^\\[(.+?)-([0-9]+)]$";
+
+    private final static int DATA_SIZE = 2;
+    private final static int FOR_PRODUCT_NAME = 0;
+    private final static int FOR_ORDER_QUANTITY = 1;
+    private final static String DELIMITER = ",";
+    private final static String REGEX_FOR_ORDER = "^\\[(.+?)-([0-9]+)]$";
 
     @Override
     public Orders build(String rawOrderTest, Inventory inventory) {
@@ -31,8 +35,8 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
     private Order buildOrder(String rawOrder, Inventory inventory) {
         validate(rawOrder);
         String[] orderDetails =  extractProductDetails(rawOrder);
-        String productName = orderDetails[0];
-        int quantity = Integer.parseInt(orderDetails[1]);
+        String productName = orderDetails[FOR_PRODUCT_NAME];
+        int quantity = Integer.parseInt(orderDetails[FOR_ORDER_QUANTITY]);
         return generateOrder(productName,quantity,inventory);
     }
 
@@ -55,9 +59,9 @@ public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
     }
 
     private String[] extractProductDetails(String rawOrder) {
-        String[] orderDetails = new String[2];
-        orderDetails[0] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$1");
-        orderDetails[1] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$2");
+        String[] orderDetails = new String[DATA_SIZE];
+        orderDetails[FOR_PRODUCT_NAME] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$1");
+        orderDetails[FOR_ORDER_QUANTITY] = rawOrder.replaceAll(REGEX_FOR_ORDER, "$2");
         return orderDetails;
     }
 }

@@ -6,9 +6,9 @@ import store.constants.Answer;
 import store.domain.processDiscount.Membership;
 
 public class StoreMembership implements Membership {
-    private final int DISCOUNT_LIMIT = 8000;
-    private final double DISCOUNT_RATE = 0.3;
-    private final int NO_DISCOUNT = 0;
+    private final static int DISCOUNT_LIMIT = 8000;
+    private final static double DISCOUNT_RATE = 0.3;
+    private final static int NO_DISCOUNT = 0;
 
     private final boolean canApplyDiscount;
 

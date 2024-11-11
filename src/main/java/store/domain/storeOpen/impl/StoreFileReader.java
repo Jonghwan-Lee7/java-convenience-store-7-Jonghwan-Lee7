@@ -10,9 +10,9 @@ import store.domain.storeOpen.FileReader;
 
 public class StoreFileReader implements FileReader {
 
-    private final String PRODUCT_PATH = "src/main/resources/products.md";
-    private final String PROMOTIONS_PATH = "src/main/resources/promotions.md";
-    private final String DELIMITER = ",";
+    private final static String PRODUCT_PATH = "src/main/resources/products.md";
+    private final static String PROMOTIONS_PATH = "src/main/resources/promotions.md";
+    private final static String DELIMITER = ",";
 
     public List<String> getRawProducts()  {
         try {

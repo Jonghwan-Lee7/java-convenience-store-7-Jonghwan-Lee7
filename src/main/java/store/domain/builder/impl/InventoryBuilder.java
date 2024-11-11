@@ -11,6 +11,16 @@ import store.domain.model.impl.StoreProduct;
 import store.utils.parser.SingleParser;
 
 public class InventoryBuilder implements InputBuilder<Inventory> {
+
+    private final static int NO_STOCK = 0;
+    private final static int FOR_PRICE= 1;
+    private final static int FOR_STOCK = 2;
+    private final static int FOR_PRODUCT_NAME = 3;
+    private final static int SIZE_PER_PRODUCT = 4;
+    private final static int DATA_START_POINT = 4;
+    private final static String NO_PROMOTION = "null";
+
+
     private final SingleParser<Integer> positiveIntParser;
 
     public InventoryBuilder( SingleParser<Integer> positiveIntParser ) {
@@ -21,7 +31,7 @@ public class InventoryBuilder implements InputBuilder<Inventory> {
     public Inventory build(List<String> rawProducts) {
         Map<String, Product> products = new HashMap<>();
 
-        for (int index = 4; index < rawProducts.size(); index += 4) {
+        for (int index = SIZE_PER_PRODUCT; index < rawProducts.size(); index += DATA_START_POINT) {
             String name = rawProducts.get(index);
             processProduct(products, rawProducts, index, name);
         }
@@ -41,8 +51,8 @@ public class InventoryBuilder implements InputBuilder<Inventory> {
 
     private void updateProduct(Map<String, Product> products, List<String> rawProducts, int index) {
         String name = rawProducts.get(index);
-        int stock = positiveIntParser.parse(rawProducts.get(index + 2));
-        String promotionName = rawProducts.get(index + 3);
+        int stock = positiveIntParser.parse(rawProducts.get(index + FOR_STOCK));
+        String promotionName = rawProducts.get(index + FOR_PRODUCT_NAME);
 
         products.get(name).addStock(stock);
         products.get(name).updatePromotion(promotionName);
@@ -51,14 +61,14 @@ public class InventoryBuilder implements InputBuilder<Inventory> {
 
 
     private Product buildProduct (List<String> rawProducts, int index) {
-        int price = positiveIntParser.parse(rawProducts.get(index + 1));
-        int stock = positiveIntParser.parse(rawProducts.get(index + 2));
-        String promotionName = rawProducts.get(index + 3);
+        int price = positiveIntParser.parse(rawProducts.get(index + FOR_PRICE));
+        int stock = positiveIntParser.parse(rawProducts.get(index + FOR_STOCK));
+        String promotionName = rawProducts.get(index + FOR_PRODUCT_NAME);
 
-        if (promotionName.equals("null")) {
-            return StoreProduct.of(price,stock,0,null);
+        if (promotionName.equals(NO_PROMOTION)) {
+            return StoreProduct.of(price,stock,NO_STOCK,null);
         }
 
-        return StoreProduct.of(price,0,stock,promotionName);
+        return StoreProduct.of(price,NO_STOCK,stock,promotionName);
     }
 }
