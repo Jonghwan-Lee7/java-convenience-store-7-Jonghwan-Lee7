@@ -3,6 +3,8 @@ package store.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import store.constants.Answer;
 import store.dto.DecisionNeededDTO;
 import store.dto.InsufficientStockDTO;
@@ -88,45 +90,6 @@ public class StoreController {
 
     }
 
-    private String getValidRePurchaseDecision(){
-        while(true){
-            try{
-                String answer =  inputView.readDecisionAboutRePurchase();
-                responseValidator.validate(answer);
-                return answer;
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e);
-            }
-        }
-    }
-
-
-
-    private void takeValidOrder(){
-        while(true){
-            try {
-                String rawOrder = inputView.readOrder();
-                receiveOrderService.takeOrder(rawOrder);
-                return;
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e);
-            }
-        }
-    }
-
-
-    private String getValidMemberShipAnswer(){
-        while(true){
-            try {
-                String answer = inputView.readDecisionAboutMembership();
-                responseValidator.validate(answer);
-                return answer;
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e);
-            }
-        }
-    }
-
 
     private void processAddition(List<String> ordersWithPossibleAddition) {
         if (ordersWithPossibleAddition.isEmpty()) {
@@ -148,49 +111,79 @@ public class StoreController {
     }
 
     private Map<String, String> collectAdditionDecisions(List<String> possibleProductsNames) {
+        return collectDecisions(possibleProductsNames,
+                productName -> productName,
+                this::getValidAdditionAnswer);
+    }
+
+    private Map<String, String> collectCustomerNoPromotionDecisions(List<InsufficientStockDTO> insufficientStockDTOs) {
+        return collectDecisions(insufficientStockDTOs,
+                InsufficientStockDTO::productName,
+                this::getValidNoPromotionAnswer);
+    }
+
+
+
+    private <T> Map<String, String> collectDecisions(List<T> items, Function<T, String> nameExtractor,
+                                                     Function<T, String> decisionGetter) {
         Map<String, String> customerDecisions = new HashMap<>();
 
-        for (String productName : possibleProductsNames) {
-            String answer = getValidAdditionAnswer(productName);
+        for (T item : items) {
+            String productName = nameExtractor.apply(item);
+            String answer = decisionGetter.apply(item);
             customerDecisions.put(productName, answer);
         }
         return customerDecisions;
+    }
+
+
+
+    private void takeValidOrder(){
+        while(true){
+            try {
+                String rawOrder = inputView.readOrder();
+                receiveOrderService.takeOrder(rawOrder);
+                return;
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
+    }
+
+
+    private String getValidInput(Supplier<String> inputSupplier) {
+        while (true) {
+            try {
+                String input = inputSupplier.get();
+                responseValidator.validate(input);
+                return input;
+
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e);
+            }
+        }
+    }
+
+    private String getValidRePurchaseDecision() {
+        return getValidInput(inputView::readDecisionAboutRePurchase);
+    }
+
+    private String getValidMemberShipAnswer() {
+        return getValidInput(inputView::readDecisionAboutMembership);
     }
 
     private String getValidAdditionAnswer(String productName) {
-        while (true)
-            try{
-                String answer = inputView.readChoiceAboutFreeAddition(productName);
-                responseValidator.validate(answer);
-                return answer;
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e);
-            }
-    }
-
-
-    private Map<String, String> collectCustomerNoPromotionDecisions(List<InsufficientStockDTO> insufficientStockDTOs) {
-        Map<String, String> customerDecisions = new HashMap<>();
-
-        for (InsufficientStockDTO insufficientStockDTO : insufficientStockDTOs) {
-            String productName = insufficientStockDTO.productName();
-            String answer = getValidNoPromotionAnswer(insufficientStockDTO);
-            customerDecisions.put(productName, answer);
-        }
-        return customerDecisions;
+        return getValidInput(() -> inputView.readChoiceAboutFreeAddition(productName));
     }
 
     private String getValidNoPromotionAnswer(InsufficientStockDTO insufficientStockDTO) {
-        while (true) {
-            String answer = inputView.readChoiceAboutNoPromotion(insufficientStockDTO);
-            try {
-                responseValidator.validate(answer);
-                return answer;
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e);
-            }
-        }
+        return getValidInput(() -> inputView.readChoiceAboutNoPromotion(insufficientStockDTO));
     }
+
+
+
+
+
 
 
 
