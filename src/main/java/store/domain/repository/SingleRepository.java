@@ -2,8 +2,8 @@ package store.domain.repository;
 
 import java.util.Optional;
 
-public interface SingleRepository <T> {
-    void save (T object);
+public interface SingleRepository <TargetType> {
+    void save (TargetType object);
 
-    Optional<T> get();
+    Optional<TargetType> get();
 }

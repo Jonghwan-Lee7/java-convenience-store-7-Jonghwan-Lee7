@@ -56,11 +56,7 @@ public class AppConfig {
 
     private final static Calculator moneyCalculator = new MoneyCalculator();
 
-    private final static PrepareOrderService prepareOrderService = new PrepareOrderServiceImpl(
-            promotionsRepository,
-            inventoryRepository,
-            promotionsBuilder,
-            inventoryBuilder);
+    private final static PrepareOrderService prepareOrderService = new PrepareOrderServiceImpl(promotionsRepository, inventoryRepository, promotionsBuilder,inventoryBuilder);
     private final static ReceiveOrderService receiveOrderService = new ReceiveOrderServiceImpl(ordersBuilder,inventoryRepository,ordersRepository);
     private final static ProcessOrderService processOrderService = new ProcessOrderServiceImpl(inventoryRepository, promotionsRepository, ordersRepository);
     private final static FinishOrderService finishOrderService = new FinishOrderServiceImpl(ordersRepository,inventoryRepository,moneyCalculator);

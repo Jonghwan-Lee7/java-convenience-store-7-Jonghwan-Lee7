@@ -17,11 +17,11 @@ public class MethodPattern {
         this.outputView = outputView;
     }
 
-    public <T> Map<String, String> collectDecisions(List<T> items, Function<T, String> nameExtractor,
-                                                     Function<T, String> decisionGetter) {
+    public <TargetType> Map<String, String> collectDecisions(List<TargetType> items, Function<TargetType, String> nameExtractor,
+                                                             Function<TargetType, String> decisionGetter) {
         Map<String, String> customerDecisions = new HashMap<>();
 
-        for (T item : items) {
+        for (TargetType item : items) {
             String productName = nameExtractor.apply(item);
             String answer = decisionGetter.apply(item);
             customerDecisions.put(productName, answer);
