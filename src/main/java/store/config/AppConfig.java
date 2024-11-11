@@ -26,6 +26,7 @@ import store.service.impl.ProcessOrderServiceImpl;
 import store.service.impl.PrepareOrderServiceImpl;
 import store.service.impl.ReceiveOrderServiceImpl;
 import store.utils.LocalDateParser;
+import store.utils.MethodPattern;
 import store.utils.ResponseValidator;
 import store.utils.SingleParser;
 import store.utils.PositiveIntParser;
@@ -64,8 +65,9 @@ public class AppConfig {
     private final static ProcessOrderService processOrderService = new ProcessOrderServiceImpl(inventoryRepository, promotionsRepository, ordersRepository);
     private final static FinishOrderService finishOrderService = new FinishOrderServiceImpl(ordersRepository,inventoryRepository,moneyCalculator);
 
+    private final static MethodPattern methodPattern = new MethodPattern(responseValidator,consoleOutputView);
 
-    private final static OrderController orderController = new OrderController(consoleOutputView,consoleInputView,processOrderService,finishOrderService,responseValidator);
+    private final static OrderController orderController = new OrderController(consoleOutputView,consoleInputView,processOrderService,finishOrderService,methodPattern);
 
     private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,
             prepareOrderService,receiveOrderService,orderController);
