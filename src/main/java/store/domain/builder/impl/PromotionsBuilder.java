@@ -44,6 +44,6 @@ public class PromotionsBuilder implements InputBuilder<Promotions> {
         LocalDate startDate = localDateParser.parse(rawPromotions.get(index + FOR_START_DATE));
         LocalDate endDate = localDateParser.parse(rawPromotions.get(index + FOR_END_DATE));
 
-        return StorePromotion.create(buyCount, getCount, startDate, endDate);
+        return StorePromotion.of(buyCount, getCount, startDate, endDate);
     }
 }

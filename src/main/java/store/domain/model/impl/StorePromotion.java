@@ -19,7 +19,7 @@ public class StorePromotion implements Promotion {
         this.endDate = endDate;
     }
 
-    public static StorePromotion create(int buyCount, int getCount, LocalDate startDate, LocalDate endDate){
+    public static StorePromotion of(int buyCount, int getCount, LocalDate startDate, LocalDate endDate){
         return new StorePromotion(buyCount, getCount, startDate, endDate);
     }
 
