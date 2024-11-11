@@ -1,7 +1,7 @@
 package store.controller;
 
 import java.util.List;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 import store.service.PrepareOrderService;
 import store.service.ReceiveOrderService;
 import store.view.InputView;
@@ -56,8 +56,8 @@ public class StoreController {
 
 
     private void receiveOrder(){
-        List<StockDTO> stockDTOs = prepareOrderService.createStockDTOs();
-        outputView.printStocks(stockDTOs);
+        List<FormattedStockDTO> formattedStockDTOS = prepareOrderService.createFormattedStockDTOs();
+        outputView.printStocks(formattedStockDTOS);
         receiveValidOrder();
     }
 

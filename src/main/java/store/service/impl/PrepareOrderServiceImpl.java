@@ -9,7 +9,7 @@ import store.domain.model.Inventory;
 import store.domain.model.Promotions;
 import store.domain.builder.InputBuilder;
 import store.domain.storeOpen.impl.StoreFileReader;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 import store.exception.EntityNotFoundException;
 import store.domain.repository.SingleRepository;
 import store.service.PrepareOrderService;
@@ -57,7 +57,7 @@ public class PrepareOrderServiceImpl implements PrepareOrderService {
     }
 
     @Override
-    public List<StockDTO> createStockDTOs(){
+    public List<FormattedStockDTO> createFormattedStockDTOs(){
         Inventory inventory =  inventoryRepository.get()
                 .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
 

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import store.domain.model.Product;
 import store.domain.model.impl.StoreInventory;
 import store.domain.model.impl.StoreProduct;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 
 @DisplayName("[Domain] Inventory")
 public class InventoryTest {
@@ -64,27 +64,27 @@ public class InventoryTest {
     @DisplayName("[toDTOs] StockDTO 리스트 생성 기능 테스트")
     class TestToDTOs {
 
-        List<StockDTO> stockDTOs = storeInventory.toDTOs();
+        List<FormattedStockDTO> formattedStockDTOS = storeInventory.toDTOs();
 
         @Test
         @DisplayName("[return] 프로모션 재고와 일반 재고를 나누어서 올바르게 반환한다.")
         public void testWithPromotionStocks() {
             String validReturn0 ="- 콜라 1,000원 10개 탄산2+1\n- 콜라 1,000원 5개";
-            assertEquals(validReturn0, stockDTOs.getLast().stock());
+            assertEquals(validReturn0, formattedStockDTOS.getLast().stock());
         }
 
         @Test
         @DisplayName("[return] 프로모션 재고가 없는 경우 일반 재고만 반환한다")
         public void testWithoutPromotionStocks() {
             String validReturn ="- 사이다 2,000원 5개";
-            assertEquals(validReturn, stockDTOs.getFirst().stock());
+            assertEquals(validReturn, formattedStockDTOS.getFirst().stock());
         }
 
         @Test
         @DisplayName("[return] 재고가 0개인 경우 재고 없음 이라 반환한다")
         public void testWithNoStock() {
             String validReturn ="- 호빵 2,000원 재고 없음";
-            assertEquals(validReturn, stockDTOs.get(1).stock());
+            assertEquals(validReturn, formattedStockDTOS.get(1).stock());
         }
     }
 

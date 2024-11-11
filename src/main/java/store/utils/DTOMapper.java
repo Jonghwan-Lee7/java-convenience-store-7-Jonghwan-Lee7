@@ -1,16 +1,16 @@
 package store.utils;
 
 import store.domain.model.Product;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 
 public class DTOMapper {
 
     private DTOMapper() {
     }
 
-    public static StockDTO toStockDTO(Product product, String productName) {
+    public static FormattedStockDTO toStockDTO(Product product, String productName) {
         String formattedString = product.toFormattedString(productName);
-        return new StockDTO(formattedString);
+        return new FormattedStockDTO(formattedString);
     }
 
 

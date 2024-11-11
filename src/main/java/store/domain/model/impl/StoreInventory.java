@@ -10,7 +10,7 @@ import java.util.Set;
 import store.domain.model.Product;
 import store.domain.model.Inventory;
 import store.dto.FinalOrderDTO;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 import store.utils.DTOMapper;
 
 public class StoreInventory implements Inventory {
@@ -25,15 +25,15 @@ public class StoreInventory implements Inventory {
     }
 
     @Override
-    public List<StockDTO> toDTOs(){
-        List<StockDTO> stockDTOs = new ArrayList<>();
+    public List<FormattedStockDTO> toDTOs(){
+        List<FormattedStockDTO> formattedStockDTOS = new ArrayList<>();
 
         for (String productName : products.keySet()) {
             Product product = products.get(productName);
-            StockDTO stockDTO =  DTOMapper.toStockDTO(product,productName);
-            stockDTOs.add(stockDTO);
+            FormattedStockDTO formattedStockDTO =  DTOMapper.toStockDTO(product,productName);
+            formattedStockDTOS.add(formattedStockDTO);
         }
-        return stockDTOs;
+        return formattedStockDTOS;
     }
 
 

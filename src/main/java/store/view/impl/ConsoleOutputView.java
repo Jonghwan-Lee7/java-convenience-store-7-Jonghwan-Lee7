@@ -1,7 +1,7 @@
 package store.view.impl;
 
 import java.util.List;
-import store.dto.StockDTO;
+import store.dto.FormattedStockDTO;
 import store.view.OutputView;
 
 public class ConsoleOutputView implements OutputView {
@@ -9,10 +9,10 @@ public class ConsoleOutputView implements OutputView {
     private final static String NOTICE_CURRENT_STOCKS = "현재 보유하고 있는 상품입니다.";
 
     @Override
-    public void printStocks(List<StockDTO> stockDTOs){
+    public void printStocks(List<FormattedStockDTO> formattedStockDTOS){
         printWelcomeMessage();
-        for (StockDTO stockDTO : stockDTOs) {
-            System.out.println(stockDTO.stock());
+        for (FormattedStockDTO formattedStockDTO : formattedStockDTOS) {
+            System.out.println(formattedStockDTO.stock());
         }
     }
 
