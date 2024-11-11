@@ -8,6 +8,7 @@ public enum ErrorMessages {
     NOT_INT("값이 정수형으로 변환될 수 없습니다."),
     NOT_POSITIVE_INT("값이 양수가 아닙니다."),
     INVALID_FORMAT("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요."),
+    INVALID_PROMOTION_NAME("프로모션 명단에 존재하지 않는 프로모션입니다."),
     INVALID_PRODUCT_NAME("존재하지 않는 상품입니다. 다시 입력해 주세요."),
     INVALID_DATE_FORMAT("잘못된 날짜 양식입니다."),
     WRONG_INPUT("잘못된 입력입니다. 다시 입력해 주세요."),

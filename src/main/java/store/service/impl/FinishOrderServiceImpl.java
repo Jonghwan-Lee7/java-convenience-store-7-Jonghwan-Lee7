@@ -1,5 +1,6 @@
 package store.service.impl;
 
+import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 import static store.exception.ErrorMessages.NO_SAVED_ORDERS;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
     private void updateInventory(List<FinalOrderDTO> finalOrderDTOs) {
         Inventory inventory =  inventoryRepository.get()
-                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_ORDERS.getErrorMessage()));
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
         inventory.updateStocks(finalOrderDTOs);
     }
 

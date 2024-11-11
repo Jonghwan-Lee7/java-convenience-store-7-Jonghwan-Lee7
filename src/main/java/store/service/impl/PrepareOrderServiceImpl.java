@@ -3,6 +3,7 @@ package store.service.impl;
 import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 
 import java.util.List;
+import java.util.Set;
 import store.domain.storeOpen.FileReader;
 import store.domain.model.Inventory;
 import store.domain.model.Promotions;
@@ -44,9 +45,14 @@ public class PrepareOrderServiceImpl implements PrepareOrderService {
 
     @Override
     public void loadInventory() {
+        Promotions promotions = promotionsRepository.get()
+                .orElseThrow(()-> new EntityNotFoundException(NO_SAVED_INVENTORY.getErrorMessage()));
+
+        Set<String> promotionNames = promotions.getPromotionNames();
 
         List<String> rawInventory = fileReader.getRawProducts();
         Inventory inventory = inventoryBuilder.build(rawInventory);
+        inventory.validateProductPromotion(promotionNames);
         inventoryRepository.save(inventory);
     }
 

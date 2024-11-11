@@ -42,7 +42,6 @@ public class StoreFileReader implements FileReader {
                 Collections.addAll(contents, parts);
             }
         }
-
         return contents;
     }
 

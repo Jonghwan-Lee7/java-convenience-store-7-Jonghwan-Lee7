@@ -41,7 +41,7 @@ public class InventoryBuilder implements InputBuilder<Inventory> {
 
     private void updateProduct(Map<String, Product> products, List<String> rawProducts, int index) {
         String name = rawProducts.get(index);
-        int stock = positiveIntParser.parse(rawProducts.get(index + 2)); // validate 메서드로 바꿔야함
+        int stock = positiveIntParser.parse(rawProducts.get(index + 2));
         String promotionName = rawProducts.get(index + 3);
 
         products.get(name).addStock(stock);

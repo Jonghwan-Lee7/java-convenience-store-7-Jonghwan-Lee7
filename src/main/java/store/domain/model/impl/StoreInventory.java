@@ -1,10 +1,12 @@
 package store.domain.model.impl;
 
 import static store.exception.ErrorMessages.INVALID_PRODUCT_NAME;
+import static store.exception.ErrorMessages.INVALID_PROMOTION_NAME;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import store.domain.model.Product;
 import store.domain.model.Inventory;
 import store.dto.FinalOrderDTO;
@@ -64,7 +66,17 @@ public class StoreInventory implements Inventory {
             Product product = products.get(productName);
             product.updateStocks(soldNormalStock, soldPromotionStock);
         }
+    }
 
+    @Override
+    public void validateProductPromotion(Set<String> promotions){
+        for ( Product product:  products.values()){
+            String promotionName  = product.getPromotionName();
+            if (promotionName == null || !promotions.contains(promotionName)){
+                throw new IllegalArgumentException(INVALID_PROMOTION_NAME.getErrorMessage());
+            }
+
+        }
     }
 
 
