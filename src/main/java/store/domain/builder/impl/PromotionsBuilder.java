@@ -7,7 +7,7 @@ import store.domain.model.Promotion;
 import store.domain.model.Promotions;
 import store.domain.model.impl.StorePromotion;
 import store.domain.model.impl.StorePromotions;
-import store.utils.SingleParser;
+import store.utils.parser.SingleParser;
 
 public class PromotionsBuilder implements InputBuilder<Promotions> {
     private final SingleParser<Integer> positiveIntParser;

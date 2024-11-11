@@ -1,7 +1,9 @@
-package store.utils;
+package store.utils.parser.impl;
 
 import static store.exception.ErrorMessages.NOT_INT;
 import static store.exception.ErrorMessages.NOT_POSITIVE_INT;
+
+import store.utils.parser.SingleParser;
 
 public class PositiveIntParser implements SingleParser<Integer> {
     public Integer parse(String rawCount){

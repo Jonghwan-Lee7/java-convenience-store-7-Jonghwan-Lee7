@@ -8,7 +8,7 @@ import store.domain.model.Inventory;
 import store.domain.model.Product;
 import store.domain.model.impl.StoreInventory;
 import store.domain.model.impl.StoreProduct;
-import store.utils.SingleParser;
+import store.utils.parser.SingleParser;
 
 public class InventoryBuilder implements InputBuilder<Inventory> {
     private final SingleParser<Integer> positiveIntParser;
