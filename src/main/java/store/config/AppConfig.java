@@ -1,6 +1,7 @@
 package store.config;
 
 import java.time.LocalDate;
+import store.controller.OrderController;
 import store.controller.StoreController;
 import store.domain.builder.TwoInputsBuilder;
 import store.domain.builder.impl.OrdersBuilder;
@@ -64,8 +65,10 @@ public class AppConfig {
     private final static FinishOrderService finishOrderService = new FinishOrderServiceImpl(ordersRepository,inventoryRepository,moneyCalculator);
 
 
+    private final static OrderController orderController = new OrderController(consoleOutputView,consoleInputView,processOrderService,finishOrderService,responseValidator);
+
     private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,
-            prepareOrderService,receiveOrderService,processOrderService,finishOrderService,responseValidator);
+            prepareOrderService,receiveOrderService,orderController);
 
     public static StoreController getStoreController(){
         return storeController;
