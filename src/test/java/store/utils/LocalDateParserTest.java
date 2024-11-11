@@ -39,8 +39,7 @@ public class LocalDateParserTest {
         void Given_InvalidDateFormat_When_Parse_Then_ThrowException(String invalidDate) {
             // when & then
             assertThatThrownBy(() -> {
-                LocalDate result = localDateParser.parse(invalidDate);
-                assertThat(result).isNull(); // 파싱이 실패하면 null이 반환되어야 함
+                localDateParser.parse(invalidDate);
             }).hasMessageContaining(INVALID_DATE_FORMAT.getErrorMessage());
         }
     }

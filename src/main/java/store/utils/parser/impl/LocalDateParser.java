@@ -12,10 +12,9 @@ public class LocalDateParser implements SingleParser<LocalDate> {
         try {
             return LocalDate.parse(rawDate);
         } catch (DateTimeParseException e) {
-            System.out.println(INVALID_DATE_FORMAT.getErrorMessage());
+            throw new IllegalArgumentException(INVALID_DATE_FORMAT.getErrorMessage());
         }
 
-        return null;
     }
 
 }
