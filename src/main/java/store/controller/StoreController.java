@@ -3,12 +3,13 @@ package store.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import store.constants.Answer;
 import store.dto.DecisionNeededDTO;
 import store.dto.InsufficientStockDTO;
 import store.dto.StockDTO;
 import store.service.FinishOrderService;
 import store.service.ProcessOrderService;
-import store.service.StoreOpenService;
+import store.service.PrepareOrderService;
 import store.service.ReceiveOrderService;
 import store.utils.Validator;
 import store.view.InputView;
@@ -19,7 +20,7 @@ public class StoreController {
 
     private final OutputView outputView;
     private final InputView inputView;
-    private final StoreOpenService storeOpenService;
+    private final PrepareOrderService prepareOrderService;
     private final ReceiveOrderService receiveOrderService;
     private final ProcessOrderService processOrderService;
     private final FinishOrderService finishOrderService;
@@ -28,7 +29,7 @@ public class StoreController {
     public StoreController(
                            OutputView outputView,
                            InputView inputView,
-                           StoreOpenService storeOpenService,
+                           PrepareOrderService prepareOrderService,
                            ReceiveOrderService takeOrderService,
                            ProcessOrderService processOrderService,
                            FinishOrderService finishOrderService,
@@ -37,15 +38,15 @@ public class StoreController {
 
         this.outputView = outputView;
         this.inputView = inputView;
-        this.storeOpenService = storeOpenService;
+        this.prepareOrderService = prepareOrderService;
         this.receiveOrderService = takeOrderService;
         this.processOrderService = processOrderService;
         this.finishOrderService = finishOrderService;
         this.responseValidator = responseValidator;
     }
     public void openStore(){
-        storeOpenService.loadPromotions();
-        storeOpenService.loadInventory();
+        prepareOrderService.loadPromotions();
+        prepareOrderService.loadInventory();
     }
 
     public void purchase(){
@@ -57,7 +58,7 @@ public class StoreController {
 
 
     private void takeOrder(){
-        List<StockDTO> stockDTOs = storeOpenService.createStockDTOs();
+        List<StockDTO> stockDTOs = prepareOrderService.createStockDTOs();
         outputView.printStocks(stockDTOs);
         takeValidOrder();
     }
@@ -81,7 +82,7 @@ public class StoreController {
 
     private void decideRePurchaseOrNot(){
         String answer = getValidRePurchaseDecision();
-        if (answer.equals("Y")){
+        if (answer.equals(Answer.YES.getMessage())){
             purchase();
         }
 

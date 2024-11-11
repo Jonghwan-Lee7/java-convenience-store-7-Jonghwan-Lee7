@@ -3,10 +3,10 @@ package store.service.impl;
 import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 
 import store.domain.builder.TwoInputsBuilder;
-import store.domain.receiveOrder.Orders;
-import store.domain.storeOpen.Inventory;
+import store.domain.model.Orders;
+import store.domain.model.Inventory;
 import store.exception.EntityNotFoundException;
-import store.repository.SingleRepository;
+import store.domain.repository.SingleRepository;
 import store.service.ReceiveOrderService;
 
 public class ReceiveOrderServiceImpl implements ReceiveOrderService {

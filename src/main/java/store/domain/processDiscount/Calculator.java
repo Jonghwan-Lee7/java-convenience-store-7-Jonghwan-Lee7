@@ -1,4 +1,4 @@
-package store.domain.processOrder;
+package store.domain.processDiscount;
 
 import java.util.List;
 import store.dto.FinalOrderDTO;

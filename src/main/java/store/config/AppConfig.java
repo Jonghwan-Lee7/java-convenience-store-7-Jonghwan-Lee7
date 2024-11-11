@@ -4,25 +4,25 @@ import java.time.LocalDate;
 import store.controller.StoreController;
 import store.domain.builder.TwoInputsBuilder;
 import store.domain.builder.impl.OrdersBuilder;
-import store.domain.processOrder.Calculator;
-import store.domain.processOrder.impl.MoneyCalculator;
-import store.domain.receiveOrder.Orders;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotions;
+import store.domain.processDiscount.Calculator;
+import store.domain.processDiscount.impl.MoneyCalculator;
+import store.domain.model.Orders;
+import store.domain.model.Inventory;
+import store.domain.model.Promotions;
 import store.domain.builder.InputBuilder;
 import store.domain.builder.impl.InventoryBuilder;
 import store.domain.builder.impl.PromotionsBuilder;
-import store.repository.impl.OrdersRepository;
-import store.repository.SingleRepository;
-import store.repository.impl.InventoryRepository;
-import store.repository.impl.PromotionsRepository;
+import store.domain.repository.impl.OrdersRepository;
+import store.domain.repository.SingleRepository;
+import store.domain.repository.impl.InventoryRepository;
+import store.domain.repository.impl.PromotionsRepository;
 import store.service.FinishOrderService;
 import store.service.ProcessOrderService;
-import store.service.StoreOpenService;
+import store.service.PrepareOrderService;
 import store.service.ReceiveOrderService;
 import store.service.impl.FinishOrderServiceImpl;
 import store.service.impl.ProcessOrderServiceImpl;
-import store.service.impl.StoreOpenServiceImpl;
+import store.service.impl.PrepareOrderServiceImpl;
 import store.service.impl.ReceiveOrderServiceImpl;
 import store.utils.LocalDateParser;
 import store.utils.ResponseValidator;
@@ -54,7 +54,7 @@ public class AppConfig {
 
     private final static Calculator moneyCalculator = new MoneyCalculator();
 
-    private final static StoreOpenService storeOpenService = new StoreOpenServiceImpl(
+    private final static PrepareOrderService prepareOrderService = new PrepareOrderServiceImpl(
             promotionsRepository,
             inventoryRepository,
             promotionsBuilder,
@@ -64,14 +64,11 @@ public class AppConfig {
     private final static FinishOrderService finishOrderService = new FinishOrderServiceImpl(ordersRepository,inventoryRepository,moneyCalculator);
 
 
-    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,storeOpenService,receiveOrderService,processOrderService,finishOrderService,responseValidator);
+    private final static StoreController storeController = new StoreController(consoleOutputView, consoleInputView,
+            prepareOrderService,receiveOrderService,processOrderService,finishOrderService,responseValidator);
 
     public static StoreController getStoreController(){
         return storeController;
-    }
-
-    public static OutputView getConsoleOutputView(){
-        return consoleOutputView;
     }
 
 

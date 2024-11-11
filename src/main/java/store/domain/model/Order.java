@@ -1,7 +1,5 @@
-package store.domain.receiveOrder;
+package store.domain.model;
 
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotion;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 
@@ -11,7 +9,6 @@ public interface Order {
     boolean canGetAdditionalOne(Promotion promotion, Inventory inventory);
     int getRegularPriceCount();
 
-    void updateNormalStock(int stockChange);
     void updatePromotionStock(int stockChange);
     void removeUnAppliedStock();
 

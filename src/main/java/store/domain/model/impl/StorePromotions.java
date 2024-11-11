@@ -1,9 +1,9 @@
-package store.domain.storeOpen.impl;
+package store.domain.model.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import store.domain.storeOpen.Promotion;
-import store.domain.storeOpen.Promotions;
+import store.domain.model.Promotion;
+import store.domain.model.Promotions;
 
 public class StorePromotions implements Promotions {
     private final Map<String, Promotion> promotions;

@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import store.domain.builder.InputBuilder;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Product;
-import store.domain.storeOpen.impl.StoreInventory;
-import store.domain.storeOpen.impl.StoreProduct;
+import store.domain.model.Inventory;
+import store.domain.model.Product;
+import store.domain.model.impl.StoreInventory;
+import store.domain.model.impl.StoreProduct;
 import store.utils.SingleParser;
 
 public class InventoryBuilder implements InputBuilder<Inventory> {

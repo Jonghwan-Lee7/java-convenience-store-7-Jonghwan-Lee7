@@ -1,16 +1,15 @@
-package store.repository.impl;
+package store.domain.repository.impl;
 
 import java.util.Optional;
-import store.domain.storeOpen.Promotions;
-import store.repository.SingleRepository;
+import store.domain.model.Promotions;
+import store.domain.repository.SingleRepository;
 
 public class PromotionsRepository implements SingleRepository<Promotions> {
     private Promotions promotions;
 
     @Override
-    public Promotions save(Promotions promotions) {
+    public void save(Promotions promotions) {
         this.promotions = promotions;
-        return this.promotions;
     }
 
     @Override

@@ -1,8 +1,8 @@
-package store.domain.storeOpen.impl;
+package store.domain.model.impl;
 
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
-import store.domain.storeOpen.Promotion;
+import store.domain.model.Promotion;
 
 public class StorePromotion implements Promotion {
     private final int buyCount;
@@ -31,9 +31,6 @@ public class StorePromotion implements Promotion {
                 (currentDate.isEqual(endDate) || currentDate.isBefore(endDate));
     }
 
-
-    // 만약 한 품목의 구매 총량을 넣었을 때의 반환 값과
-    // 프로모션 재고에서 차감되는 양을 넣을 때의 반환결과가 다르면 이는 프로모션 재고 부족 문제.
     @Override
     public int getApplicableItemCount (int purchaseCount) {
         return (purchaseCount / (buyCount + getCount))  * (buyCount + getCount);
@@ -45,10 +42,4 @@ public class StorePromotion implements Promotion {
         return (purchaseCount / (buyCount + getCount))  * getCount ;
     }
 
-
-    // 이 메서드는 Product로 옮기는게 맞아보임
-    @Override
-    public boolean canGetFreeItem(int purchaseCount) {
-        return  getFreeItemCount( purchaseCount ) !=  getFreeItemCount( purchaseCount + 1 );
-    }
 }

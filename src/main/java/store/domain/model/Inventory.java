@@ -1,4 +1,4 @@
-package store.domain.storeOpen;
+package store.domain.model;
 
 import java.util.List;
 import store.dto.FinalOrderDTO;

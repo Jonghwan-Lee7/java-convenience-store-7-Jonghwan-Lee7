@@ -5,11 +5,11 @@ import static store.exception.ErrorMessages.INVALID_FORMAT;
 import java.util.ArrayList;
 import java.util.List;
 import store.domain.builder.TwoInputsBuilder;
-import store.domain.receiveOrder.Order;
-import store.domain.receiveOrder.Orders;
-import store.domain.receiveOrder.impl.StoreOrder;
-import store.domain.receiveOrder.impl.StoreOrders;
-import store.domain.storeOpen.Inventory;
+import store.domain.model.Order;
+import store.domain.model.Orders;
+import store.domain.model.impl.StoreOrder;
+import store.domain.model.impl.StoreOrders;
+import store.domain.model.Inventory;
 
 public class OrdersBuilder implements TwoInputsBuilder<Orders,Inventory> {
     private final String DELIMITER = ",";

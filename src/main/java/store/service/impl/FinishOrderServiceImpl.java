@@ -3,15 +3,15 @@ package store.service.impl;
 import static store.exception.ErrorMessages.NO_SAVED_ORDERS;
 
 import java.util.List;
-import store.domain.processOrder.Calculator;
-import store.domain.processOrder.Membership;
-import store.domain.processOrder.impl.StoreMembership;
-import store.domain.receiveOrder.Orders;
-import store.domain.storeOpen.Inventory;
+import store.domain.processDiscount.Calculator;
+import store.domain.processDiscount.Membership;
+import store.domain.processDiscount.impl.StoreMembership;
+import store.domain.model.Orders;
+import store.domain.model.Inventory;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 import store.exception.EntityNotFoundException;
-import store.repository.SingleRepository;
+import store.domain.repository.SingleRepository;
 import store.service.FinishOrderService;
 
 public class FinishOrderServiceImpl implements FinishOrderService {
@@ -19,13 +19,24 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     private final SingleRepository<Inventory> inventoryRepository;
     private final Calculator moneyCalculator;
 
+    private static final String PROMOTION_DISCOUNT = "행사할인";
+    private static final String MEMBERSHIP_DISCOUNT = "멤버십할인";
+    private static final String PRODUCT_NAME = "상품명";
+    private static final String COUNT = "수량";
+    private static final String PRICE = "금액";
+    private static final String AMOUNT_TO_PAY = "내실돈";
+    private static final String TOTAL_PURCHASE_AMOUNT = "총구매액";
+
     private static final String RECEIPT_LOGO = "==============W 편의점================\n";
-    private static final String PRODUCT_HEADER_FORMAT = "%-14s %5s %14s\n";
-    private static final String PRODUCT_ITEM_FORMAT = "%-14s %5s %14s\n";
-    private static final String SUMMARY_FORMAT = "%-14s %5s %14s\n";
-    private static final String PROMOTION_FORMAT = "%-14s %5s\n";
     private static final String PROMOTION_HEADER="=============증     정===============\n";
     private static final String SUMMARY_HEADER = "====================================\n";
+
+    private static final String NUMBER_COMMA_FORMAT = "%,d";
+    private static final String PRODUCT_ITEM_FORMAT = "%-14s %5s %14s\n";
+    private static final String PROMOTION_FORMAT = "%-14s %5s\n";
+
+    private static final String EMPTY = "";
+    private static final int FOR_MINUS_SIGN = -1;
 
     public FinishOrderServiceImpl(SingleRepository<Orders> ordersRepository,
                                   SingleRepository<Inventory> inventoryRepository,
@@ -71,12 +82,12 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     }
 
     private void addProductList(StringBuilder receipt, List<FinalOrderDTO>  finalOrderDTOs){
-        receipt.append(String.format(PRODUCT_HEADER_FORMAT, "상품명","수량","금액"));
+        receipt.append(String.format(PRODUCT_ITEM_FORMAT, PRODUCT_NAME,COUNT,PRICE));
 
         for (FinalOrderDTO finalOrderDTO : finalOrderDTOs) {
             String productName = finalOrderDTO.productName();
-            String totalStock = String.format("%,d",finalOrderDTO.normalStockCount() + finalOrderDTO.promotionStockCount());
-            String totalPrice = String.format("%,d",finalOrderDTO.price());
+            String totalStock = String.format(NUMBER_COMMA_FORMAT,finalOrderDTO.normalStockCount() + finalOrderDTO.promotionStockCount());
+            String totalPrice = String.format(NUMBER_COMMA_FORMAT,finalOrderDTO.price());
             receipt.append(String.format(PRODUCT_ITEM_FORMAT, productName, totalStock, totalPrice));
         }
     }
@@ -86,7 +97,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
 
         for(FinalPromotionDTO finalPromotionDTO : finalPromotionDTOS){
             String productName = finalPromotionDTO.productName();
-            String count = String.format("%,d",finalPromotionDTO.freeCount());
+            String count = String.format(NUMBER_COMMA_FORMAT,finalPromotionDTO.freeCount());
             receipt.append(String.format(PROMOTION_FORMAT, productName, count));
         }
     }
@@ -109,14 +120,10 @@ public class FinishOrderServiceImpl implements FinishOrderService {
                                       int totalPromotionAmount, int membershipDiscountAmount, int amountToPay) {
 
         receipt.append(SUMMARY_HEADER);
-        appendTotalPurchase(receipt, totalCounts, totalPurchaseAmount);
-        receipt.append(String.format(SUMMARY_FORMAT, "행사할인", "", String.format("%,d",(-1) * totalPromotionAmount)));
-        receipt.append(String.format(SUMMARY_FORMAT, "멤버십할인", "", String.format("%,d",(-1) * membershipDiscountAmount)));
-        receipt.append(String.format(SUMMARY_FORMAT, "내실돈", "", String.format("%,d",amountToPay)));
-    }
-
-    private void appendTotalPurchase(StringBuilder totalSummary, int totalCounts, int totalPurchaseAmount) {
-        totalSummary.append(String.format(PRODUCT_HEADER_FORMAT, "총구매액", String.format("%,d",totalCounts), String.format("%,d",totalPurchaseAmount)));
+        receipt.append(String.format(PRODUCT_ITEM_FORMAT, TOTAL_PURCHASE_AMOUNT, String.format(NUMBER_COMMA_FORMAT,totalCounts), String.format(NUMBER_COMMA_FORMAT,totalPurchaseAmount)));
+        receipt.append(String.format(PRODUCT_ITEM_FORMAT, PROMOTION_DISCOUNT, EMPTY, String.format(NUMBER_COMMA_FORMAT, FOR_MINUS_SIGN * totalPromotionAmount)));
+        receipt.append(String.format(PRODUCT_ITEM_FORMAT, MEMBERSHIP_DISCOUNT, EMPTY, String.format(NUMBER_COMMA_FORMAT, FOR_MINUS_SIGN * membershipDiscountAmount)));
+        receipt.append(String.format(PRODUCT_ITEM_FORMAT, AMOUNT_TO_PAY, EMPTY, String.format(NUMBER_COMMA_FORMAT,amountToPay)));
     }
 
     private int calculateTotalCounts(List<FinalOrderDTO> finalOrderDTOs) {
@@ -137,7 +144,7 @@ public class FinishOrderServiceImpl implements FinishOrderService {
     }
 
     private int calculateAmountToPay(int totalPurchaseAmount, int totalPromotionAmount, int membershipDiscountAmount) {
-        return totalPurchaseAmount - totalPromotionAmount - membershipDiscountAmount;
+        return moneyCalculator.calculateAmountToPay(totalPurchaseAmount, totalPromotionAmount, membershipDiscountAmount);
     }
 
     private int getMembershipDiscountAmount(String answer, int totalPurchaseAmount, int promotionAppliedAmount){

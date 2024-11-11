@@ -1,6 +1,6 @@
 package store.utils;
 
-import store.domain.storeOpen.Product;
+import store.domain.model.Product;
 import store.dto.StockDTO;
 
 public class DTOMapper {

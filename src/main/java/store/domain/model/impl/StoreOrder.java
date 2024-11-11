@@ -1,12 +1,16 @@
-package store.domain.receiveOrder.impl;
+package store.domain.model.impl;
 
-import store.domain.receiveOrder.Order;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotion;
+import store.domain.model.Order;
+import store.domain.model.Inventory;
+import store.domain.model.Promotion;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 
 public class StoreOrder implements Order {
+
+    private static final int NO_NORMAL_STOCK = 0;
+    private static final int ADDITIONAL_FREE_STOCK = 1;
+
     private final String productName;
     private int normalStock;
     private int promotionStock;
@@ -43,10 +47,10 @@ public class StoreOrder implements Order {
     public boolean canGetAdditionalOne(Promotion promotion, Inventory inventory) {
         adaptPromotion(promotion);
 
-        boolean isNormalStockZero = (normalStock == 0);
+        boolean isNormalStockZero = (normalStock == NO_NORMAL_STOCK);
         boolean canGetAnotherOne = (promotion.getFreeItemCount(promotionStock) != promotion.getFreeItemCount(
-                promotionStock + 1));
-        boolean hasEnoughStock = inventory.hasEnoughPromotionStock( productName, promotionStock + 1);
+                promotionStock + ADDITIONAL_FREE_STOCK));
+        boolean hasEnoughStock = inventory.hasEnoughPromotionStock( productName, promotionStock + ADDITIONAL_FREE_STOCK);
 
         return isNormalStockZero && canGetAnotherOne && hasEnoughStock;
     }
@@ -57,14 +61,9 @@ public class StoreOrder implements Order {
     }
 
     @Override
-    public void updateNormalStock(int stockChange){
-        normalStock += stockChange;
-    }
-
-    @Override
     public void updatePromotionStock(int stockChange){
         promotionStock += stockChange;
-        if(stockChange == 1){
+        if(stockChange == ADDITIONAL_FREE_STOCK){
             promotionAppliedStock = promotionStock;
             freeStock += stockChange;
         }
@@ -72,7 +71,7 @@ public class StoreOrder implements Order {
 
     @Override
     public void removeUnAppliedStock(){
-        normalStock = 0;
+        normalStock = NO_NORMAL_STOCK;
         promotionStock = promotionAppliedStock;
     }
 

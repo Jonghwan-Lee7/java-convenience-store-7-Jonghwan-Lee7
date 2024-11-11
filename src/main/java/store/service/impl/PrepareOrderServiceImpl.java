@@ -4,16 +4,16 @@ import static store.exception.ErrorMessages.NO_SAVED_INVENTORY;
 
 import java.util.List;
 import store.domain.storeOpen.FileReader;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotions;
+import store.domain.model.Inventory;
+import store.domain.model.Promotions;
 import store.domain.builder.InputBuilder;
 import store.domain.storeOpen.impl.StoreFileReader;
 import store.dto.StockDTO;
 import store.exception.EntityNotFoundException;
-import store.repository.SingleRepository;
-import store.service.StoreOpenService;
+import store.domain.repository.SingleRepository;
+import store.service.PrepareOrderService;
 
-public class StoreOpenServiceImpl implements StoreOpenService {
+public class PrepareOrderServiceImpl implements PrepareOrderService {
     private final SingleRepository<Promotions> promotionsRepository;
     private final SingleRepository<Inventory> inventoryRepository;
     private final InputBuilder<Promotions> promotionsBuilder;
@@ -21,10 +21,10 @@ public class StoreOpenServiceImpl implements StoreOpenService {
 
     private final FileReader fileReader = new StoreFileReader();
 
-    public StoreOpenServiceImpl(SingleRepository<Promotions> promotionsRepository,
-                                SingleRepository<Inventory> inventoryRepository,
-                                InputBuilder<Promotions> promotionsBuilder,
-                                InputBuilder<Inventory> inventoryBuilder) {
+    public PrepareOrderServiceImpl(SingleRepository<Promotions> promotionsRepository,
+                                   SingleRepository<Inventory> inventoryRepository,
+                                   InputBuilder<Promotions> promotionsBuilder,
+                                   InputBuilder<Inventory> inventoryBuilder) {
 
         this.promotionsRepository = promotionsRepository;
         this.inventoryRepository = inventoryRepository;

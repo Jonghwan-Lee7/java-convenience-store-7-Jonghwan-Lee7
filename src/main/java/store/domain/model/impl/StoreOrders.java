@@ -1,4 +1,7 @@
-package store.domain.receiveOrder.impl;
+package store.domain.model.impl;
+
+import static store.constants.Answer.NO;
+import static store.constants.Answer.YES;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,17 +9,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import store.domain.receiveOrder.Order;
-import store.domain.receiveOrder.Orders;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotion;
-import store.domain.storeOpen.Promotions;
+import store.domain.model.Order;
+import store.domain.model.Orders;
+import store.domain.model.Inventory;
+import store.domain.model.Promotion;
+import store.domain.model.Promotions;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 import store.dto.InsufficientStockDTO;
 
 public class StoreOrders implements Orders {
-    List<Order> orders;
+    private static final int ADDITIONAL_FREE_ONE = 1;
+    private static final int NO_REGULAR_PRICE_COUNT = 0;
+    private static final int NO_FREE_PRICE_COUNT = 0;
+
+    private final List<Order> orders;
 
     private StoreOrders(List<Order> orders) {
         this.orders = orders;
@@ -24,11 +31,6 @@ public class StoreOrders implements Orders {
 
     public static StoreOrders of(List<Order> orders) {
         return new StoreOrders(orders);
-    }
-
-    @Override
-    public List<Order> getOrders() {
-        return orders;
     }
 
     @Override
@@ -63,8 +65,8 @@ public class StoreOrders implements Orders {
         Map<String,Integer> promotionStockChanges = new HashMap<>();
 
         for (Map.Entry<String, String> decision : customerDecisions.entrySet()) {
-            if ("Y".equals(decision.getValue())) {
-                promotionStockChanges.put(decision.getKey(), 1);
+            if (YES.getMessage().equals(decision.getValue())) {
+                promotionStockChanges.put(decision.getKey(), ADDITIONAL_FREE_ONE);
             }
         }
         applyToPromotionStocks(promotionStockChanges);
@@ -75,7 +77,7 @@ public class StoreOrders implements Orders {
     public void applyInsufficientPromotionStock(Map<String, String> customerDecisions){
         Set<String> targetsToQuitStock = new HashSet<>();
         for (Map.Entry<String, String> decision : customerDecisions.entrySet()) {
-            if ("N".equals(decision.getValue())) {
+            if (NO.getMessage().equals(decision.getValue())) {
                 targetsToQuitStock.add(decision.getKey());
             }
         }
@@ -98,7 +100,7 @@ public class StoreOrders implements Orders {
 
         for (Order order: orders){
             FinalPromotionDTO finalPromotionDTO = order.getFinalPromotionDTO();
-            if (finalPromotionDTO.freeCount() == 0) {
+            if (finalPromotionDTO.freeCount() == NO_FREE_PRICE_COUNT) {
                 continue;
             }
             finalPromotions.add(finalPromotionDTO);
@@ -138,7 +140,7 @@ public class StoreOrders implements Orders {
             return false;
         }
         if ( isPromotionValid(order,promotions)){
-            return order.getRegularPriceCount() != 0;
+            return order.getRegularPriceCount() != NO_REGULAR_PRICE_COUNT;
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package store.domain.storeOpen.impl;
+package store.domain.model.impl;
 
 
 import static java.lang.Math.min;
@@ -6,9 +6,18 @@ import static store.exception.ErrorMessages.MORE_THAN_TOTAL_STOCK;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.domain.storeOpen.Product;
+import store.domain.model.Product;
 
 public class StoreProduct implements Product {
+
+    private static final int OUT_OF_STOCK = 0;
+    private static final String NO_STOCK = "재고 없음";
+    private static final String STOCK_FORMAT = "%d개";
+    private static final String PROMOTION_STOCK_FORMAT = "- %s %,d원 %s %s\n";
+    private static final String NORMAL_STOCK_FORMAT = "- %s %,d원 %s";
+    private static final String INITIAL_STATE = "";
+
+
 
     private final int price;
     private int normalStock;
@@ -35,11 +44,11 @@ public class StoreProduct implements Product {
 
     @Override
     public void addStock(int stock){
-        if (this.normalStock == 0){
+        if (this.normalStock == OUT_OF_STOCK){
             this.normalStock = stock;
         }
 
-        if (this.promotionStock == 0){
+        if (this.promotionStock == OUT_OF_STOCK){
             this.promotionStock = stock;
         }
     }
@@ -53,13 +62,13 @@ public class StoreProduct implements Product {
 
     @Override
     public String toFormattedString(String productName) {
-        String productStatus = "";
+        String productStatus = INITIAL_STATE;
         if (this.promotionName != null){
             productStatus = addPromotionProductStatus(productName);
         }
 
         String normalStock = parseStock(this.normalStock);
-        productStatus += String.format("- %s %,d원 %s", productName, this.price, normalStock);
+        productStatus += String.format(NORMAL_STOCK_FORMAT, productName, this.price, normalStock);
 
         return productStatus;
     }
@@ -103,17 +112,17 @@ public class StoreProduct implements Product {
 
 
     private String parseStock(int stock){
-        if (stock != 0){
-            return String.format("%d개", stock);
+        if (stock != OUT_OF_STOCK){
+            return String.format(STOCK_FORMAT, stock);
         }
 
-        return "재고 없음";
+        return NO_STOCK;
     }
 
     private String addPromotionProductStatus(String productName){
         String promotionStock = parseStock(this.promotionStock);
 
-        return String.format("- %s %,d원 %s %s\n", productName, this.price, promotionStock, this.promotionName);
+        return String.format(PROMOTION_STOCK_FORMAT, productName, this.price, promotionStock, this.promotionName);
     }
 
 }

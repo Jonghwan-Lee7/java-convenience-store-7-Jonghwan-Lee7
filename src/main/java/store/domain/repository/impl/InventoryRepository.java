@@ -1,16 +1,15 @@
-package store.repository.impl;
+package store.domain.repository.impl;
 
 import java.util.Optional;
-import store.domain.storeOpen.Inventory;
-import store.repository.SingleRepository;
+import store.domain.model.Inventory;
+import store.domain.repository.SingleRepository;
 
 public class InventoryRepository implements SingleRepository<Inventory> {
     private Inventory inventory;
 
     @Override
-    public Inventory save(Inventory inventory) {
+    public void save(Inventory inventory) {
         this.inventory = inventory;
-        return this.inventory;
     }
 
     @Override

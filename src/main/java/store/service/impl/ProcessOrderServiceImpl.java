@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import store.domain.receiveOrder.Orders;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Promotions;
+import store.domain.model.Orders;
+import store.domain.model.Inventory;
+import store.domain.model.Promotions;
 import store.dto.DecisionNeededDTO;
 import store.dto.InsufficientStockDTO;
 import store.exception.EntityNotFoundException;
-import store.repository.SingleRepository;
+import store.domain.repository.SingleRepository;
 import store.service.ProcessOrderService;
 
 public class ProcessOrderServiceImpl implements ProcessOrderService {

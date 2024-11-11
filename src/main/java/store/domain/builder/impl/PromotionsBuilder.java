@@ -3,10 +3,10 @@ package store.domain.builder.impl;
 import java.time.LocalDate;
 import java.util.List;
 import store.domain.builder.InputBuilder;
-import store.domain.storeOpen.Promotion;
-import store.domain.storeOpen.Promotions;
-import store.domain.storeOpen.impl.StorePromotion;
-import store.domain.storeOpen.impl.StorePromotions;
+import store.domain.model.Promotion;
+import store.domain.model.Promotions;
+import store.domain.model.impl.StorePromotion;
+import store.domain.model.impl.StorePromotions;
 import store.utils.SingleParser;
 
 public class PromotionsBuilder implements InputBuilder<Promotions> {

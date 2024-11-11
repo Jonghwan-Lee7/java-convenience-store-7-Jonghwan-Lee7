@@ -1,12 +1,12 @@
-package store.domain.storeOpen.impl;
+package store.domain.model.impl;
 
 import static store.exception.ErrorMessages.INVALID_PRODUCT_NAME;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import store.domain.storeOpen.Inventory;
-import store.domain.storeOpen.Product;
+import store.domain.model.Product;
+import store.domain.model.Inventory;
 import store.dto.FinalOrderDTO;
 import store.dto.StockDTO;
 import store.utils.DTOMapper;

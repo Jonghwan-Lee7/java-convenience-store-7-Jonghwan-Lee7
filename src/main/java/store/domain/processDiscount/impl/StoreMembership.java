@@ -1,8 +1,9 @@
-package store.domain.processOrder.impl;
+package store.domain.processDiscount.impl;
 
 import static java.lang.Math.min;
 
-import store.domain.processOrder.Membership;
+import store.constants.Answer;
+import store.domain.processDiscount.Membership;
 
 public class StoreMembership implements Membership {
     private final int DISCOUNT_LIMIT = 8000;
@@ -16,7 +17,7 @@ public class StoreMembership implements Membership {
     }
 
     public static StoreMembership create(String answer){
-        if (answer.equals("Y")){
+        if (answer.equals(Answer.YES.getMessage())){
             return new StoreMembership(true);
         }
         return new StoreMembership(false);

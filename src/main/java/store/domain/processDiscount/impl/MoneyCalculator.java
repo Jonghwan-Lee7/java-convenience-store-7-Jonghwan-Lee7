@@ -1,7 +1,7 @@
-package store.domain.processOrder.impl;
+package store.domain.processDiscount.impl;
 
 import java.util.List;
-import store.domain.processOrder.Calculator;
+import store.domain.processDiscount.Calculator;
 import store.dto.FinalOrderDTO;
 import store.dto.FinalPromotionDTO;
 
