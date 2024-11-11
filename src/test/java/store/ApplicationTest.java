@@ -54,6 +54,45 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
+    void 프로모션_추가_적용() {
+        assertSimpleTest(() -> {
+            run("[콜라-5]","Y" ,"N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("-2,000");
+        });
+    }
+    @Test
+    void 프로모션_추가_미적용() {
+        assertSimpleTest(() -> {
+            run("[콜라-5]","N" ,"N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("-1,000");
+        });
+    }
+    @Test
+    void 프로모션_미적용_재고_취소() {
+        assertSimpleTest(() -> {
+            run("[콜라-12]","N" ,"N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("9,000");
+        });
+    }
+
+    @Test
+    void 프로모션_미적용_재고_결제() {
+        assertSimpleTest(() -> {
+            run("[콜라-12]","Y" ,"N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("12,000");
+        });
+    }
+
+
+    @Test
+    void 재구매_결정() {
+        assertSimpleTest(() -> {
+            run("[비타민워터-3],[물-2],[정식도시락-2]", "N", "Y","[비타민워터-3],[물-2],[정식도시락-2]", "N","N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈18,300");
+        });
+    }
+
+    @Test
     void 예외_테스트() {
         assertSimpleTest(() -> {
             runException("[컵라면-12]", "N", "N");
